@@ -109,6 +109,7 @@ Select an option from a list.
 | argument          | type          | default | description                        |
 |:------------------|:--------------|:--------|:-----------------------------------|
 | options           | List[str]     |         | The options to select from.        |
+| text              | List[int]     | `[ ]`   | Adds non-selectable text           |
 | deselected_prefix | str, optional | `[ ]`   | Prefix for deselected option.      |
 | selected_prefix   | str, optional | `[x]`   | Prefix for selected option.        |
 | selected_index    | int, optional | 0       | The index to be selected at first. |
