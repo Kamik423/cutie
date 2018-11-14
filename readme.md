@@ -140,7 +140,8 @@ Also **please report any issues and bugs you might find!**
 
 ## Authors
 
-* Currently this entire project is just by me.
+* Main project by [me](https://github.com/Kamik423).
+* Windows support by [Lhitrom](https://github.com/Lhitrom).
 
 ## License
 
