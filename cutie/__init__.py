@@ -31,14 +31,14 @@ def get_number(
         try:
             return_value = float(input_value)
         except ValueError:
-            print('Not a valid number.\033[1A\r\033[K', end='')
+            print('Not a valid number.\033[K\033[1A\r\033[K', end='')
         if not allow_float and return_value is not None:
             if return_value != int(return_value):
-                print('Has to be an integer.\033[1A\r\033[K', end='')
+                print('Has to be an integer.\033[K\033[1A\r\033[K', end='')
                 return_value = None
         if min_value is not None and return_value is not None:
             if return_value < min_value:
-                print(f'Has to be at least {min_value}.\033[1A\r\033[K',
+                print(f'Has to be at least {min_value}.\033[K\033[1A\r\033[K',
                       end='')
                 return_value = None
         if max_value is not None and return_value is not None:
@@ -60,7 +60,7 @@ def secure_input(prompt: str) -> str:
         prompt (str): The prompt asking the user to input.
 
     Returns:
-        str: The secure input
+        str: The secure input.
     """
     return getpass.getpass(prompt + ' ')
 
