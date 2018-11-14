@@ -71,7 +71,7 @@ def secure_input(prompt: str) -> str:
 
 def select(
         options: List[str],
-        text: List[str],
+        text: List[int],
         deselected_prefix: str = '\033[1m[ ]\033[0m ',
         selected_prefix: str = '\033[1m[\033[32;1mx\033[0;1m]\033[0m ',
         selected_index: int = 0) -> int:
