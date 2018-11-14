@@ -2,16 +2,22 @@
 
 *Commandline User Tools for Input Easification*
 
-A tool for handling common user input functions in an elegant way so you don't have to write them yourself once a week.
-It should work on all major operating systems (Mac, Linux, Windows).
-
-![example](https://github.com/Kamik423/cutie/blob/master/example.gif?raw=true)
-
 [![PRs Welcome](https://img.shields.io/badge/Homepage-GitHub-green.svg)](https://github.com/kamik423/cutie)
 [![PyPI version](https://badge.fury.io/py/cutie.svg)](https://badge.fury.io/py/cutie)
 [![PyPI license](https://img.shields.io/pypi/l/cutie.svg)](https://pypi.python.org/pypi/cutie/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/cutie.svg)](https://pypi.python.org/pypi/cutie/)
 [![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
+
+A tool for handling common user input functions in an elegant way.
+It supports asking yes or no questions, selecting an element from a list with arrow keys, forcing the user to input a number and secure text entry while having many customization options.
+
+For example the yes or no input supports forcing the user to match case, tab autocomplete and switching option with the arrow keys.
+The number input allows setting a minum and a maximum, entering floats or forcing the user to use integers.
+It will only return once the user inputs a number in that format, showing a warning to them if it does not conform.
+
+It should work on all major operating systems (Mac, Linux, Windows).
+
+![example](https://github.com/Kamik423/cutie/blob/master/example.gif?raw=true)
 
 ## Usage
 
@@ -37,6 +43,8 @@ if cutie.prompt_yes_or_no('Are you brave enough to continue?'):
     quest = cutie.secure_input('What is your quest?')
     print(f'{name}\'s quest (who is {age}) is {quest}.')
 ```
+
+When run, as demonstrated in the gif above it yields this output:
 
 ```
 Are you brave enough to continue? (Y/N) Yes

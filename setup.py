@@ -1,13 +1,14 @@
 import setuptools
 
 with open('readme.md', encoding='utf-8') as file:
-    long_description = file.read().split('<!---START--->')[-1].split('<!---END--->')[0]
-    long_description = long_description.replace('<!---PYPI', '')
-    long_description = long_description.replace('PYPI--->', '')
+    long_description = file.read()
+    # long_description = long_description.split('<!---START--->')[-1].split('<!---END--->')[0]
+    # long_description = long_description.replace('<!---PYPI', '')
+    # long_description = long_description.replace('PYPI--->', '')
 
 setuptools.setup(
     name='cutie',
-    version='0.0.7',
+    version='0.0.8',
     author='Hans',
     author_email='contact.kamik423@gmail.com',
     description='Commandline User Tools for Input Easification',
