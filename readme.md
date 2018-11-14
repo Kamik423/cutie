@@ -6,6 +6,7 @@ A tool for handling common user input functions in an elegant way so you don't h
 
 ![example](https://github.com/Kamik423/cutie/blob/master/example.gif?raw=true)
 
+[![PRs Welcome](https://img.shields.io/badge/Homepage-GitHub-green.svg)](https://github.com/kamik423/cutie)
 [![PyPI version](https://badge.fury.io/py/cutie.svg)](https://badge.fury.io/py/cutie)
 [![PyPI license](https://img.shields.io/pypi/l/cutie.svg)](https://pypi.python.org/pypi/cutie/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/cutie.svg)](https://pypi.python.org/pypi/cutie/)
@@ -146,7 +147,7 @@ Also **please report any issues and bugs you might find!**
 
 ## License
 
-The project is licensed under the [MIT-License](license.md).
+The project is licensed under the [MIT-License](https://github.com/Kamik423/cutie/blob/master/license.md).
 
 ## Acknowledgments
 

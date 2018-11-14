@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: cutie
-Version: 0.0.2
+Version: 0.0.3
 Summary: Commandline User Tools for Input Easification
 Home-page: https://github.com/kamik423/cutie
 Author: Hans
@@ -14,6 +14,7 @@ Description: # CUTIE
         
         ![example](https://github.com/Kamik423/cutie/blob/master/example.gif?raw=true)
         
+        [![PRs Welcome](https://img.shields.io/badge/Homepage-GitHub-green.svg)](https://github.com/kamik423/cutie)
         [![PyPI version](https://badge.fury.io/py/cutie.svg)](https://badge.fury.io/py/cutie)
         [![PyPI license](https://img.shields.io/pypi/l/cutie.svg)](https://pypi.python.org/pypi/cutie/)
         [![PyPI pyversions](https://img.shields.io/pypi/pyversions/cutie.svg)](https://pypi.python.org/pypi/cutie/)
@@ -154,7 +155,7 @@ Description: # CUTIE
         
         ## License
         
-        The project is licensed under the [MIT-License](license.md).
+        The project is licensed under the [MIT-License](https://github.com/Kamik423/cutie/blob/master/license.md).
         
         ## Acknowledgments
         
