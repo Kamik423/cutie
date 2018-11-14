@@ -10,5 +10,5 @@ names = [
 
 text = [
         1]
-name = names[__init__.select(names, text, selected_index=2)]
+name = names[__init__.select(names, text, selected_index=5)]
 
