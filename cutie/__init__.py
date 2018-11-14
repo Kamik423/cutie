@@ -71,6 +71,7 @@ def secure_input(prompt: str) -> str:
 
 def select(
         options: List[str],
+        text: List[str],
         deselected_prefix: str = '\033[1m[ ]\033[0m ',
         selected_prefix: str = '\033[1m[\033[32;1mx\033[0;1m]\033[0m ',
         selected_index: int = 0) -> int:
@@ -89,14 +90,23 @@ def select(
     while 1:
         print(f'\033[{len(options) + 1}A')
         for i, option in enumerate(options):
-            print('\033[K{}{}'.format(
-                selected_prefix if i == selected_index else deselected_prefix,
-                option))
+            if i not in text:
+                print('\033[K{}{}'.format(
+                    selected_prefix if i == selected_index else deselected_prefix,
+                    option))
+            elif i in text:
+                print(options[i])
         keypress = readchar.readkey()
         if keypress == readchar.key.UP:
-            selected_index = max(selected_index - 1, 0)
+            if selected_index - 1 not in text:
+                selected_index = max(selected_index - 1, 0)
+            else:
+                selected_index = max(selected_index - 2, 0)
         elif keypress == readchar.key.DOWN:
-            selected_index = min(selected_index + 1, len(options) - 1)
+            if selected_index + 1 not in text:
+                selected_index = min(selected_index + 1, len(options) - 1)
+            else:
+                selected_index = min(selected_index + 2, len(options) - 1)
         else:
             break
     return selected_index
