@@ -92,8 +92,8 @@ def select(
         for i, option in enumerate(options):
             if i not in text:
                 print('\033[K{}{}'.format(
-                    selected_prefix if i == selected_index else deselected_prefix,
-                    option))
+                    selected_prefix if i == selected_index else
+                    deselected_prefix, option))
             elif i in text:
                 print(options[i])
         keypress = readchar.readkey()
