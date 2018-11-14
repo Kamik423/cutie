@@ -4,7 +4,12 @@
 
 A tool for handling common user input functions in an elegant way so you don't have to write them yourself once a week.
 
-![example](example.gif)
+![example](https://github.com/Kamik423/cutie/blob/master/example.gif?raw=true)
+
+[![PyPI version](https://badge.fury.io/py/cutie.svg)](https://badge.fury.io/py/cutie)
+[![PyPI license](https://img.shields.io/pypi/l/cutie.svg)](https://pypi.python.org/pypi/cutie/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/cutie.svg)](https://pypi.python.org/pypi/cutie/)
+[![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
 
 ## Usage
 
@@ -125,21 +130,25 @@ Prompt the user to input yes or no.
 
 The bool what has been selected.
 
-# Contributing
+## Support
 
-If you want to contribute, please feel free to suggest features or implement some from the (roadmap)[#Roadmap], other ones that are still lacking, or bugfixes.
+This does not support Windows, only Unix systems due to Windows not supporting the ANSII escape sequences all of this is based on.
 
-Also **please encounter any issues and bugs you might find!**
+## Contributing
 
-# Authors
+If you want to contribute, please feel free to suggest features or implement them yourself.
+
+Also **please report any issues and bugs you might find!**
+
+## Authors
 
 * Currently this entire project is just by me.
 
-# License
+## License
 
 The project is licensed under the [MIT-License](license.md).
 
-# Acknowledgments
+## Acknowledgments
 
 * This project uses the module [Readchar](https://pypi.org/project/readchar/) for direct input handling.
 
