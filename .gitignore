@@ -3,3 +3,7 @@
 .DS_Store
 .Trashes
 .aux_LaTeX
+
+build
+cutie.egg-info
+dist
