@@ -3,6 +3,7 @@
 *Commandline User Tools for Input Easification*
 
 A tool for handling common user input functions in an elegant way so you don't have to write them yourself once a week.
+It should work on all major operating systems (Mac, Linux, Windows).
 
 ![example](https://github.com/Kamik423/cutie/blob/master/example.gif?raw=true)
 
@@ -130,10 +131,6 @@ Prompt the user to input yes or no.
 #### Returns
 
 The bool what has been selected.
-
-## Support
-
-This does not support Windows, only Unix systems due to Windows not supporting the ANSII escape sequences all of this is based on.
 
 ## Contributing
 
