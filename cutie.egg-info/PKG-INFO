@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: cutie
+Version: 0.0.1
+Summary: Commandline User Tools for Input Easification
+Home-page: https://github.com/kamik423/cutie
+Author: Hans
+Author-email: contact.kamik423@gmail.com
+License: MIT
+Description: # CUTIE
+        
+        Commandline User Tools for Input Easification
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
