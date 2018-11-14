@@ -7,7 +7,7 @@ with open('readme.md', encoding='utf-8') as file:
 
 setuptools.setup(
     name='cutie',
-    version='0.0.1',
+    version='0.0.2',
     author='Hans',
     author_email='contact.kamik423@gmail.com',
     description='Commandline User Tools for Input Easification',
