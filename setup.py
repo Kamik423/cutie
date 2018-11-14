@@ -7,7 +7,7 @@ with open('readme.md', encoding='utf-8') as file:
 
 setuptools.setup(
     name='cutie',
-    version='0.0.3',
+    version='0.0.4',
     author='Hans',
     author_email='contact.kamik423@gmail.com',
     description='Commandline User Tools for Input Easification',
@@ -16,7 +16,7 @@ setuptools.setup(
     url='https://github.com/kamik423/cutie',
     packages=setuptools.find_packages(),
     license='MIT',
-    install_requires=['readchar'],
+    install_requires=['colorama', 'readchar'],
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
