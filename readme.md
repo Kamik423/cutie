@@ -4,7 +4,7 @@
 
 A tool for handling common user input functions in an elegant way so you don't have to write them yourself once a week.
 
-[![demo](https://asciinema.org/a/113463.svg)](https://asciinema.org/a/Ai7Y4LABAnaZa0OovnuO7cwOw?autoplay=1)
+![example](example.gif)
 
 ## Usage
 
