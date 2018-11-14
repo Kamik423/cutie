@@ -4,9 +4,11 @@
 
 import getpass
 from typing import List, Optional
-
 import readchar
 
+from colorama import init
+
+init()
 
 def get_number(
         prompt: str,
