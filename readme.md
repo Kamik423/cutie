@@ -7,6 +7,7 @@
 [![PyPI license](https://img.shields.io/pypi/l/cutie.svg)](https://pypi.python.org/pypi/cutie/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/cutie.svg)](https://pypi.python.org/pypi/cutie/)
 [![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
+[![GitHub contributors](https://img.shields.io/github/contributors/Kamik423/cutie.svg)](https://GitHub.com/Kamik423/cutie/graphs/contributors/)
 
 A tool for handling common user input functions in an elegant way.
 It supports asking yes or no questions, selecting an element from a list with arrow keys, forcing the user to input a number and secure text entry while having many customization options.
@@ -75,8 +76,16 @@ Sir Robin the Not-Quite-So-Brave-as-Sir-Lancelot's quest (who is 31) is to find 
 
 ## Installation
 
+With pip from pypi:
+
 ```bash
 pip3 install cutie
+```
+
+With pip from source or in a virtual environment:
+
+```bash
+pip3 install -r requirements.txt
 ```
 
 ## Documentation
@@ -125,7 +134,7 @@ Select an option from a list.
 | caption_indices   | List[int], optional | `None`  | Non-selectable indices.            |
 | deselected_prefix | str, optional       | `[ ]`   | Prefix for deselected option.      |
 | selected_prefix   | str, optional       | `[x]`   | Prefix for selected option.        |
-| caption_prefix    | str, optional       | ``      | Prefix for captions.               |
+| caption_prefix    | str, optional       | ` `     | Prefix for captions.               |
 | selected_index    | int, optional       | 0       | The index to be selected at first. |
 
 #### Returns

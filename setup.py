@@ -8,7 +8,7 @@ with open('readme.md', encoding='utf-8') as file:
 
 setuptools.setup(
     name='cutie',
-    version='0.0.8',
+    version='0.1.0',
     author='Hans',
     author_email='contact.kamik423@gmail.com',
     description='Commandline User Tools for Input Easification',
@@ -18,8 +18,9 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     license='MIT',
     install_requires=['colorama', 'readchar'],
+    python_requires='>=3.5',
     classifiers=[
-        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: only',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
