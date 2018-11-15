@@ -20,7 +20,7 @@ setuptools.setup(
     install_requires=['colorama', 'readchar'],
     python_requires='>=3.5',
     classifiers=[
-        'Programming Language :: Python :: 3 :: only',
+        'Programming Language :: Python :: 3 :: Only',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
