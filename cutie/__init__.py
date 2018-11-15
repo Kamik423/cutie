@@ -87,7 +87,7 @@ def select(
         int: The index that has been selected.
     """
     print('\n' * (len(options) - 1))
-    while 1:
+    while True:
         print(f'\033[{len(options) + 1}A')
         for i, option in enumerate(options):
             if i not in text:
