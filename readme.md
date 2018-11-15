@@ -108,9 +108,9 @@ Getting any three digit number for example could be done like that:
 ```python
 number = cutie.get_number(
     'Please enter a three digit number:',
-    min_value: 100,
-    max_value: 999,
-    allow_float: False)
+    min_value=100,
+    max_value=999,
+    allow_float=False)
 # which is equivalent to
 number = cutie.get_number('Please enter a three digit number', 100, 999, False)
 ```
@@ -276,6 +276,10 @@ if cutie.prompt_yes_or_no(
 The bool what has been selected.
 
 ## Changelog
+
+### 0.2.2
+
+* Fixed Python in examples
 
 ### 0.2.1
 
