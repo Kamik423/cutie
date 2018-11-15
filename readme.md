@@ -91,10 +91,29 @@ pip3 install -r requirements.txt
 
 ## Documentation
 
+All functions of cutie are explained here.
+If something is still unclear or you have questions about the implementation just take a look at [cutie.py]((https://github.com/Kamik423/cutie/blob/master/cutie.py).
+The implementation is rather straight forward.
+
 ### get\_number
 
 Get a number from user input.
+
 If an invalid number is entered the user will be prompted again.
+A minimum and maximum value can be supplied. They are inclusive.
+If the `allow_float` option, which is `True` by default is set to `False` it forces the user to enter an integer.
+
+Getting any three digit number for example could be done like that:
+
+```python
+number = cutie.get_number(
+    'Please enter a three digit number:',
+    min_value: 100,
+    max_value: 999,
+    allow_float: False)
+# which is equivalent to
+number = cutie.get_number('Please enter a three digit number', 100, 999, False)
+```
 
 #### Arguments
 
@@ -113,6 +132,12 @@ The number input by the user.
 
 Get secure input without showing it in the command line.
 
+This could be used for passwords:
+
+```python
+password = cutie.secure_input('Please enter your password:')
+```
+
 #### Arguments
 
 | argument | type | description                          |
@@ -126,6 +151,28 @@ The secure input.
 ### select
 
 Select an option from a list.
+
+Captions or separators can be included between options by adding them as an option and including their index in `caption_indices`.
+A preselected index can be supplied.
+
+In its simplest case it could be used like this:
+
+```python
+colors = ['red', 'green', 'blue', 'yellow']
+print('What is your favorite color?')
+favorite_color = colors[cutie.select(colors)]
+```
+
+With the high degree of customizability, however it is possible to do things like:
+
+```python
+print('Select server to ping')
+server_id = cutie.select(
+    servers,
+    deselected_prefix='    ',
+    selected_prefix='PING',
+    selected_index=default_server_ip)
+```
 
 #### Arguments
 
@@ -152,6 +199,18 @@ The button can be hidden.
 In that case space bar selects the line and enter confirms the selection.
 
 This is not in the example in this readme, but in [example.py](https://github.com/Kamik423/cutie/blob/master/example.py).
+
+```python
+packages_to_update = cutie.select_multiple(
+    outdated_packages,
+    deselected_unticked_prefix='  KEEP  ',
+    deselected_ticked_prefix=' UPDATE ',
+    selected_unticked_prefix='[ KEEP ]',
+    selected_ticked_prefix='[UPDATE]',
+    ticked_indices=list(range(len(outdated_packages))),
+    deselected_confirm_label='  [[[[ UPDATE ]]]]  ',
+    selected_confirm_label='[ [[[[ UPDATE ]]]] ]')
+```
 
 #### Arguments
 
@@ -180,6 +239,23 @@ A list of indices that have been selected.
 
 Prompt the user to input yes or no.
 
+This again can range from very simple to very highly customized:
+
+```python
+if cutie.prompt_yes_or_no('Do you want to continue?'):
+    do_continue()
+```
+
+```python
+if cutie.prompt_yes_or_no(
+    'Do you want to hear ze funniest joke in ze world? Proceed at your own risk.',
+    yes_text='JA',
+    no_text='nein',
+    has_to_match_case=True, # The user has to type the exact case
+    enter_empty_confirms=False, # An answer has to be selected
+    )
+```
+
 #### Arguments
 
 | argument               | type           | default | description                          |
@@ -199,11 +275,41 @@ Prompt the user to input yes or no.
 
 The bool what has been selected.
 
+## Changelog
+
+### 0.2.1
+
+* Expanded readme descriptions
+
+### 0.2.0
+
+* `select_multiple`
+* Tweaks to the readme
+
+### 0.1.1
+
+* Fixed pypi download not working
+
+### 0.1.0
+
+* `caption_indices` option by [dherrada](https://github.com/dherrada)
+
+### 0.0.7
+
+* Windows support by [Lhitrom](https://github.com/Lhitrom)
+
+### 0.0.x
+
+* Initial upload and got everything working
+
+
 ## Contributing
 
 If you want to contribute, please feel free to suggest features or implement them yourself.
 
 Also **please report any issues and bugs you might find!**
+
+If you have a project that uses cutie please let me know and I'll link it here!
 
 ## Authors
 
