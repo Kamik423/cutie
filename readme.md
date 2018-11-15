@@ -1,6 +1,6 @@
 # CUTIE
 
-*Commandline User Tools for Input Easification*
+*Command line User Tools for Input Easification*
 
 [![PRs Welcome](https://img.shields.io/badge/Homepage-GitHub-green.svg)](https://github.com/kamik423/cutie)
 [![PyPI version](https://badge.fury.io/py/cutie.svg)](https://badge.fury.io/py/cutie)
@@ -22,7 +22,8 @@ It should work on all major operating systems (Mac, Linux, Windows).
 
 ## Usage
 
-These are the main functions of cutie:
+These are the main functions of cutie.
+[example.py](https://github.com/Kamik423/cutie/blob/master/example.py) contains an extended version of this also showing off the `select_multiple` option.
 
 ```python
 import cutie
@@ -97,12 +98,12 @@ If an invalid number is entered the user will be prompted again.
 
 #### Arguments
 
-| argument    | type            | default    | description                          |
-|:------------|:----------------|:-----------|:-------------------------------------|
-| prompt      | str             |            | The prompt asking the user to input. |
-| min_value   | float, optional | - infinity | The [inclusive] minimum value.       |
-| max_value   | float, optional | infinity   | The [inclusive] maximum value.       |
-| allow_float | bool, optional  | True       | Allow floats or force integers.      |
+| argument      | type            | default    | description                          |
+|:--------------|:----------------|:-----------|:-------------------------------------|
+| `prompt`      | str             |            | The prompt asking the user to input. |
+| `min_value`   | float, optional | - infinity | The [inclusive] minimum value.       |
+| `max_value`   | float, optional | infinity   | The [inclusive] maximum value.       |
+| `allow_float` | bool, optional  | True       | Allow floats or force integers.      |
 
 #### Returns
 
@@ -116,7 +117,7 @@ Get secure input without showing it in the command line.
 
 | argument | type | description                          |
 |:---------|:-----|:-------------------------------------|
-| prompt   | str  | The prompt asking the user to input. |
+| `prompt` | str  | The prompt asking the user to input. |
 
 #### Returns
 
@@ -128,18 +129,52 @@ Select an option from a list.
 
 #### Arguments
 
-| argument          | type                | default | description                        |
-|:------------------|:--------------------|:--------|:-----------------------------------|
-| options           | List[str]           |         | The options to select from.        |
-| caption_indices   | List[int], optional | `None`  | Non-selectable indices.            |
-| deselected_prefix | str, optional       | `[ ]`   | Prefix for deselected option.      |
-| selected_prefix   | str, optional       | `[x]`   | Prefix for selected option.        |
-| caption_prefix    | str, optional       | ` `     | Prefix for captions.               |
-| selected_index    | int, optional       | 0       | The index to be selected at first. |
+| argument            | type                | default | description                        |
+|:--------------------|:--------------------|:--------|:-----------------------------------|
+| `options`           | List[str]           |         | The options to select from.        |
+| `caption_indices`   | List[int], optional | `None`  | Non-selectable indices.            |
+| `deselected_prefix` | str, optional       | `[ ]`   | Prefix for deselected option.      |
+| `selected_prefix`   | str, optional       | `[x]`   | Prefix for selected option.        |
+| `caption_prefix`    | str, optional       | ` `     | Prefix for captions.               |
+| `selected_index`    | int, optional       | 0       | The index to be selected at first. |
 
 #### Returns
 
 The index that has been selected.
+
+### select\_multiple
+
+Select multiple options from a list.
+
+It per default shows a "confirm" button.
+In that case space bar and enter select a line.
+The button can be hidden.
+In that case space bar selects the line and enter confirms the selection.
+
+This is not in the example in this readme, but in [example.py](https://github.com/Kamik423/cutie/blob/master/example.py).
+
+#### Arguments
+
+| argument                     | type                | default         | description                                                                                                |
+|:-----------------------------|:--------------------|:----------------|:-----------------------------------------------------------------------------------------------------------|
+| `options`                    | List[str]           |                 | The options to select from.                                                                                |
+| `caption_indices`            | List[int], optional |                 | Non-selectable indices.                                                                                    |
+| `deselected_unticked_prefix` | str, optional       | `( )`           | Prefix for lines that are not selected and not ticked .                                                    |
+| `deselected_ticked_prefix`   | str, optional       | `(x)`           | Prefix for lines that are not selected but ticked .                                                        |
+| `selected_unticked_prefix`   | str, optional       | `{ }`           | Prefix for lines that are selected but not ticked .                                                        |
+| `selected_ticked_prefix`     | str, optional       | `{x}`           | Prefix for lines that are selected and ticked .                                                            |
+| `caption_prefix`             | str, optional       | ` `             | Prefix for captions.                                                                                       |
+| `ticked_indices`             | List[int], optional | `[]`            | Indices that are ticked initially.                                                                         |
+| `cursor_index`               | int, optional       | 0               | The index the cursor starts at.                                                                            |
+| `minimal_count`              | int, optional       | 0               | The minimal amount of lines that have to be ticked.                                                        |
+| `maximal_count`              | int, optional       | infinity        | The maximal amount of lines that have to be ticked.                                                        |
+| `hide_confirm`               | bool, optional      | `False`         | Hide the confirm button. This causes `<ENTER>` to confirm the entire selection and not just tick the line. |
+| `deselected_confirm_label`   | str, optional       | `(( confirm ))` | The confirm label if not selected.                                                                         |
+| `selected_confirm_label`     | str, optional       | `{{ confirm }}` | The confirm label if selected.                                                                             |
+
+#### Returns
+
+A list of indices that have been selected.
 
 ### prompt\_yes\_or\_no
 
@@ -147,18 +182,18 @@ Prompt the user to input yes or no.
 
 #### Arguments
 
-| argument             | type                     | default | description                          |
-|:---------------------|:-------------------------|:--------|:-------------------------------------|
-| question             | str                      |         | The prompt asking the user to input. |
-| yes_text             | str, optional            | `Yes`   | The text corresponding to 'yes'.     |
-| no_text              | str, optional            | `No`    | The text corresponding to 'no'.      |
-| has_to_match_case    | bool, optional           | `False` | Does the case have to match.         |
-| enter_empty_confirms | bool, optional           | True    | Does enter on empty string work.     |
-| default_is_yes       | bool, optional           | False   | Is yes selected by default           |
-| deselected_prefix    | str, optional            | `  `    | Prefix if something is deselected.   |
-| selected_prefix      | str, optional            | `> `    | Prefix if something is selected      |
-| abort_value          | Optional[bool], optional | `None`  | The value on interrupt.              |
-| char_prompt          | bool, optional           | `True`  | Add a [Y/N] to the prompt.           |
+| argument               | type           | default | description                          |
+|:-----------------------|:---------------|:--------|:-------------------------------------|
+| `question`             | str            |         | The prompt asking the user to input. |
+| `yes_text`             | str, optional  | `Yes`   | The text corresponding to 'yes'.     |
+| `no_text`              | str, optional  | `No`    | The text corresponding to 'no'.      |
+| `has_to_match_case`    | bool, optional | `False` | Does the case have to match.         |
+| `enter_empty_confirms` | bool, optional | True    | Does enter on empty string work.     |
+| `default_is_yes`       | bool, optional | False   | Is yes selected by default           |
+| `deselected_prefix`    | str, optional  | `  `    | Prefix if something is deselected.   |
+| `selected_prefix`      | str, optional  | `> `    | Prefix if something is selected      |
+| `abort_value`          | bool, optional | `None`  | The value on interrupt.              |
+| `char_prompt`          | bool, optional | `True`  | Add a [Y/N] to the prompt.           |
 
 #### Returns
 

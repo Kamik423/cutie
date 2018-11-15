@@ -31,9 +31,33 @@ def main():
             'What is your age?',
             min_value=0,
             allow_float=False)
+        nemeses_options = [
+            'The French',
+            'The Police',
+            'The Knights Who Say Ni',
+            'Women',
+            'The Black Knight',
+            'The Bridge Keeper',
+            'Especially terrifying:',
+            'The Rabbit of Caerbannog',
+        ]
+        print('Choose your nemeses')
+        # Choose multiple options from a list
+        nemeses_indices = cutie.select_multiple(
+            nemeses_options, caption_indices=[6])
+        nemeses = [nemesis for nemesis_index, nemesis
+                   in enumerate(nemeses_options)
+                   if nemesis_index in nemeses_indices]
         # Get input without showing it being typed
         quest = cutie.secure_input('What is your quest?')
         print(f'{name}\'s quest (who is {age}) is {quest}.')
+        if nemeses:
+            if len(nemeses) == 1:
+                print(f'His nemesis is {nemeses[0]}.')
+            else:
+                print(f'His nemeses are {" and ".join(nemeses)}.')
+        else:
+            print('He has no nemesis.')
 
 
 if __name__ == '__main__':

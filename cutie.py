@@ -121,6 +121,136 @@ def select(
     return selected_index
 
 
+def select_multiple(
+        options: List[str],
+        caption_indices: Optional[List[int]] = None,
+        deselected_unticked_prefix: str = '\033[1m( )\033[0m ',
+        deselected_ticked_prefix: str = '\033[1m(\033[32mx\033[0;1m)\033[0m ',
+        selected_unticked_prefix: str = '\033[32;1m{ }\033[0m ',
+        selected_ticked_prefix: str = '\033[32;1m{x}\033[0m ',
+        caption_prefix: str = '',
+        ticked_indices: Optional[List[int]] = None,
+        cursor_index: int = 0,
+        minimal_count: int = 0,
+        maximal_count: Optional[int] = None,
+        hide_confirm: bool = False,
+        deselected_confirm_label: str = '\033[1m(( confirm ))\033[0m',
+        selected_confirm_label: str = '\033[1;32m{{ confirm }}\033[0m',
+    ) -> List[int]:
+    """Select multiple options from a list.
+
+    Args:
+        options (List[str]): The options to select from.
+        caption_indices (List[int], optional): Non-selectable indices.
+        deselected_unticked_prefix (str, optional): Prefix for lines that are
+            not selected and not ticked (( )).
+        deselected_ticked_prefix (str, optional): Prefix for lines that are
+            not selected but ticked ((x)).
+        selected_unticked_prefix (str, optional): Prefix for lines that are
+            selected but not ticked ({ }).
+        selected_ticked_prefix (str, optional): Prefix for lines that are
+            selected and ticked ({x}).
+        caption_prefix (str, optional): Prefix for captions ().
+        ticked_indices (List[int], optional): Indices that are
+            ticked initially.
+        cursor_index (int, optional): The index the cursor starts at.
+        minimal_count (int, optional): The minimal amount of lines
+            that have to be ticked.
+        maximal_count (int, optional): The maximal amount of lines
+            that have to be ticked.
+        hide_confirm (bool, optional): Hide the confirm button.
+            This causes <ENTER> to confirm the entire selection and not just
+            tick the line.
+        deselected_confirm_label (str, optional): The confirm label
+            if not selected ((( confirm ))).
+        selected_confirm_label (str, optional): The confirm label
+            if selected ({{ confirm }}).
+
+    Returns:
+        List[int]: The indices that have been selected
+    """
+    print('\n' * (len(options) - 1))
+    if caption_indices is None:
+        caption_indices = []
+    if ticked_indices is None:
+        ticked_indices = []
+    tick_keys = [' ']
+    max_index = len(options) - (1 if hide_confirm else 0)
+    if not hide_confirm:
+        tick_keys.append(readchar.key.ENTER)
+    error_message = ''
+    while True:
+        print(f'\033[{max_index + 2}A')
+        for i, option in enumerate(options):
+            prefix = ''
+            if i in caption_indices:
+                prefix = caption_prefix
+            elif i == cursor_index:
+                if i in ticked_indices:
+                    prefix = selected_ticked_prefix
+                else:
+                    prefix = selected_unticked_prefix
+            else:
+                if i in ticked_indices:
+                    prefix = deselected_ticked_prefix
+                else:
+                    prefix = deselected_unticked_prefix
+            print('\033[K{}{}'.format(prefix, option))
+        if not hide_confirm:
+            if cursor_index == max_index:
+                print(f'{selected_confirm_label} {error_message}\033[K')
+            else:
+                print(f'{deselected_confirm_label} {error_message}\033[K')
+        error_message = ''
+        keypress = readchar.readkey()
+        if keypress == readchar.key.UP:
+            new_index = cursor_index
+            while new_index > 0:
+                new_index -= 1
+                if new_index not in caption_indices:
+                    cursor_index = new_index
+                    break
+        elif keypress == readchar.key.DOWN:
+            new_index = cursor_index
+            while new_index + 1 <= max_index:
+                new_index += 1
+                if new_index not in caption_indices:
+                    cursor_index = new_index
+                    break
+        elif keypress in tick_keys:
+            if cursor_index == max_index and not hide_confirm:
+                if minimal_count > len(ticked_indices):
+                    error_message = \
+                        f'Must select at least {minimal_count} options'
+                elif maximal_count is not None and\
+                        maximal_count < len(ticked_indices):
+                    error_message = \
+                        f'Must select at most {maximal_count} options'
+                else:
+                    break
+            elif cursor_index in ticked_indices:
+                if len(ticked_indices) - 1 >= minimal_count:
+                    ticked_indices.remove(cursor_index)
+            elif maximal_count is not None:
+                if len(ticked_indices) + 1 <= maximal_count:
+                    ticked_indices.append(cursor_index)
+            else:
+                ticked_indices.append(cursor_index)
+        else:
+            if minimal_count > len(ticked_indices):
+                error_message = \
+                    f'Must select at least {minimal_count} options'
+            elif maximal_count is not None and\
+                    maximal_count < len(ticked_indices):
+                error_message = \
+                    f'Must select at most {maximal_count} options'
+            else:
+                break
+    if not hide_confirm:
+        print('\033[1A\033[K', end='', flush=True)
+    return ticked_indices
+
+
 def prompt_yes_or_no(
         question: str,
         yes_text: str = 'Yes',
@@ -143,7 +273,7 @@ def prompt_yes_or_no(
         default_is_yes (bool, optional): Is yes selected by default (no).
         deselected_prefix (str, optional): Prefix if something is deselected.
         selected_prefix (str, optional): Prefix if something is selected (> )
-        abort_value (Optional[bool], optional): The value on interrupt.
+        abort_value (bool, optional): The value to return on interrupt.
         char_prompt (bool, optional): Add a [Y/N] to the prompt.
 
     Returns:
