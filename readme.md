@@ -92,7 +92,7 @@ pip3 install -r requirements.txt
 ## Documentation
 
 All functions of cutie are explained here.
-If something is still unclear or you have questions about the implementation just take a look at [cutie.py]((https://github.com/Kamik423/cutie/blob/master/cutie.py).
+If something is still unclear or you have questions about the implementation just take a look at [cutie.py](https://github.com/Kamik423/cutie/blob/master/cutie.py).
 The implementation is rather straight forward.
 
 ### get\_number
