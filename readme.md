@@ -27,19 +27,29 @@ These are the main functions of cutie:
 import cutie
 
 if cutie.prompt_yes_or_no('Are you brave enough to continue?'):
+    # List of names to select from, including some captions
     names = [
+        'Kings:',
         'Arthur, King of the Britons',
+        'Knights of the Round Table:',
         'Sir Lancelot the Brave',
         'Sir Robin the Not-Quite-So-Brave-as-Sir-Lancelot',
         'Sir Bedevere the Wise',
         'Sir Galahad the Pure',
+        'Swedish captions:',
         'Møøse']
-    name = names[cutie.select(names, selected_index=5)]
+    # Names which are captions and thus not selectable
+    captions = [0, 2, 7]
+    # Get the name
+    name = names[
+        cutie.select(names, caption_indices=captions, selected_index=8)]
     print(f'Welcome, {name}')
+    # Get an integer greater or equal to 0
     age = cutie.get_number(
         'What is your age?',
         min_value=0,
         allow_float=False)
+    # Get input without showing it being typed
     quest = cutie.secure_input('What is your quest?')
     print(f'{name}\'s quest (who is {age}) is {quest}.')
 ```
@@ -48,16 +58,19 @@ When run, as demonstrated in the gif above it yields this output:
 
 ```
 Are you brave enough to continue? (Y/N) Yes
+Kings:
 [ ] Arthur, King of the Britons
+Knights of the Round Table:
 [ ] Sir Lancelot the Brave
 [x] Sir Robin the Not-Quite-So-Brave-as-Sir-Lancelot
 [ ] Sir Bedevere the Wise
 [ ] Sir Galahad the Pure
+Swedish captions:
 [ ] Møøse
 Welcome, Sir Robin the Not-Quite-So-Brave-as-Sir-Lancelot
 What is your age? 31
 What is your quest?
-Sir Robin the Not-Quite-So-Brave-as-Sir-Lancelot's quest (who is 31) is to seek the holy grail.
+Sir Robin the Not-Quite-So-Brave-as-Sir-Lancelot's quest (who is 31) is to find the holy grail.
 ```
 
 ## Installation
@@ -106,13 +119,14 @@ Select an option from a list.
 
 #### Arguments
 
-| argument          | type          | default | description                        |
-|:------------------|:--------------|:--------|:-----------------------------------|
-| options           | List[str]     |         | The options to select from.        |
-| text              | List[int]     | `None`  | Adds non-selectable text           |
-| deselected_prefix | str, optional | `[ ]`   | Prefix for deselected option.      |
-| selected_prefix   | str, optional | `[x]`   | Prefix for selected option.        |
-| selected_index    | int, optional | 0       | The index to be selected at first. |
+| argument          | type                | default | description                        |
+|:------------------|:--------------------|:--------|:-----------------------------------|
+| options           | List[str]           |         | The options to select from.        |
+| caption_indices   | List[int], optional | `None`  | Non-selectable indices.            |
+| deselected_prefix | str, optional       | `[ ]`   | Prefix for deselected option.      |
+| selected_prefix   | str, optional       | `[x]`   | Prefix for selected option.        |
+| caption_prefix    | str, optional       | ``      | Prefix for captions.               |
+| selected_index    | int, optional       | 0       | The index to be selected at first. |
 
 #### Returns
 
@@ -151,6 +165,7 @@ Also **please report any issues and bugs you might find!**
 
 * Main project by [me](https://github.com/Kamik423).
 * Windows support by [Lhitrom](https://github.com/Lhitrom).
+* `caption_indices` and tidbits by [dherrada](https://github.com/dherrada).
 
 ## License
 

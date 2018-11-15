@@ -1,8 +1,11 @@
 ._*
 
+__pycache__/
+*.pyc
+
+
 .DS_Store
 .Trashes
-.aux_LaTeX
 
 build
 cutie.egg-info

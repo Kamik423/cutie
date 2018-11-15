@@ -71,42 +71,51 @@ def secure_input(prompt: str) -> str:
 
 def select(
         options: List[str],
-        text: List[int],
+        caption_indices: Optional[List[int]] = None,
         deselected_prefix: str = '\033[1m[ ]\033[0m ',
         selected_prefix: str = '\033[1m[\033[32;1mx\033[0;1m]\033[0m ',
+        caption_prefix: str = '',
         selected_index: int = 0) -> int:
     """Select an option from a list.
 
     Args:
         options (List[str]): The options to select from.
+        caption_indices (List[int], optional): Non-selectable indices.
         deselected_prefix (str, optional): Prefix for deselected option ([ ]).
         selected_prefix (str, optional): Prefix for selected option ([x]).
+        caption_prefix (str, optional): Prefix for captions ().
         selected_index (int, optional): The index to be selected at first.
 
     Returns:
         int: The index that has been selected.
     """
     print('\n' * (len(options) - 1))
+    if caption_indices is None:
+        caption_indices = []
     while True:
         print(f'\033[{len(options) + 1}A')
         for i, option in enumerate(options):
-            if i not in text:
+            if i not in caption_indices:
                 print('\033[K{}{}'.format(
                     selected_prefix if i == selected_index else
                     deselected_prefix, option))
-            elif i in text:
-                print(options[i])
+            elif i in caption_indices:
+                print('\033[K{}{}'.format(caption_prefix, options[i]))
         keypress = readchar.readkey()
         if keypress == readchar.key.UP:
-            if selected_index - 1 not in text:
-                selected_index = max(selected_index - 1, 0)
-            else:
-                selected_index = max(selected_index - 2, 0)
+            new_index = selected_index
+            while new_index > 0:
+                new_index -= 1
+                if new_index not in caption_indices:
+                    selected_index = new_index
+                    break
         elif keypress == readchar.key.DOWN:
-            if selected_index + 1 not in text:
-                selected_index = min(selected_index + 1, len(options) - 1)
-            else:
-                selected_index = min(selected_index + 2, len(options) - 1)
+            new_index = selected_index
+            while new_index < len(options) - 1:
+                new_index += 1
+                if new_index not in caption_indices:
+                    selected_index = new_index
+                    break
         else:
             break
     return selected_index
@@ -146,7 +155,7 @@ def prompt_yes_or_no(
     yn_prompt = f' ({yes_text[0]}/{no_text[0]}) ' if char_prompt else ': '
     abort = False
     print()
-    while 1:
+    while True:
         yes = is_yes and is_selected
         no = not is_yes and is_selected
         print('\033[K'
