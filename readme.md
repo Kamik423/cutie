@@ -324,7 +324,7 @@ If you have a project that uses cutie please let me know and I'll link it here!
 * Main project by [me](https://github.com/Kamik423).
 * Windows support by [Lhitrom](https://github.com/Lhitrom).
 * `caption_indices` and tidbits by [dherrada](https://github.com/dherrada).
-* EP8 Compliance by [Christopher Bilger](https://github.com/ChristopherBilg).
+* PEP8 Compliance by [Christopher Bilger](https://github.com/ChristopherBilg).
 
 ## License
 
