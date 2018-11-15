@@ -333,3 +333,42 @@ def prompt_yes_or_no(
     if abort:
         return abort_value
     return is_selected and is_yes
+
+def quiz(
+        questions: List[List[str]],
+        question_types: List[str],
+        caption_indices: Optional[List[List[int]]] = None,
+        newlines: Optional[int] = 0,
+        path: Optional[str] = None):
+    """ Allows the user to execute multiple questions at the same time, similar 
+        to if they were taking a quiz or test
+        questions: List of variable names for with answers
+            Ex: q = ['1', '2', '3']
+                q1 = ['4', '5', '6']
+                questions = [q1, q2]
+        question_types: List of strings with the question types
+            Ex: ['select_multiple', 'select']
+        caption_indices: List of lists, each containing caption indices 
+            Ex: [[0, 3], [], [1]]
+        newlines: number of lines to put in-between questions
+        path: saves answers to specified file
+    """        
+    if path:
+        F = open(path, 'w')
+    for i in range(len(questions)):
+        if question_types[i] == 'select_multiple':
+            answer = select_multiple(questions[i], 
+                    caption_indices = caption_indices[i])
+            
+        elif question_types[i] == 'prompt_yes_or_no':
+            answer = prompt_yes_or_no(questions[i])
+        elif question_types[i] == 'select':
+            answer = select(questions[i], 
+                    caption_indices = caption_indices[i])
+        if path:
+            F.write(str(i + 1) + '.\t' + str(answer) + '\n')
+
+        for i in range(0, newlines):
+            print('\n')
+    if path:
+        F.close()
