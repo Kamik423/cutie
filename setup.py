@@ -1,8 +1,13 @@
+"""Setup module for PyPI / pip integration.
+"""
+
 import setuptools
 
+
 with open('readme.md', encoding='utf-8') as file:
-    long_description = file.read()
-    # long_description = long_description.split('<!---START--->')[-1].split('<!---END--->')[0]
+    LONG_DESCRIPTION = file.read()
+    # long_description = long_description.split('<!---START--->')[-1]
+    #                                    .split('<!---END--->')[0]
     # long_description = long_description.replace('<!---PYPI', '')
     # long_description = long_description.replace('PYPI--->', '')
 
@@ -12,7 +17,7 @@ setuptools.setup(
     author='Hans',
     author_email='contact.kamik423@gmail.com',
     description='Commandline User Tools for Input Easification',
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
     url='https://github.com/kamik423/cutie',
     py_modules=['cutie'],

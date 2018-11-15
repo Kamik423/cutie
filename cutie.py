@@ -136,7 +136,7 @@ def select_multiple(
         hide_confirm: bool = False,
         deselected_confirm_label: str = '\033[1m(( confirm ))\033[0m',
         selected_confirm_label: str = '\033[1;32m{{ confirm }}\033[0m',
-    ) -> List[int]:
+) -> List[int]:
     """Select multiple options from a list.
 
     Args:
