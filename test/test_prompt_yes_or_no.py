@@ -122,22 +122,26 @@ class TestPromtYesOrNo(unittest.TestCase):
     @mock.patch("cutie.print")
     def test_ctrl_c_abort(self, *m):
         with InputContext(readchar.key.CTRL_C):
-            self.assertEqual(cutie.prompt_yes_or_no("", abort_value="foo"), "foo")
+            with self.assertRaises(KeyboardInterrupt):
+                self.assertEqual(cutie.prompt_yes_or_no(""))
 
     @mock.patch("cutie.print")
     def test_ctrl_c_abort_with_input(self, *m):
         with InputContext(readchar.key.UP, readchar.key.CTRL_D):
-            self.assertEqual(cutie.prompt_yes_or_no("", abort_value="foo"), "foo")
+            with self.assertRaises(KeyboardInterrupt):
+                self.assertEqual(cutie.prompt_yes_or_no(""))
 
     @mock.patch("cutie.print")
     def test_ctrl_d_abort(self, *m):
-        with InputContext(readchar.key.CTRL_C):
-            self.assertEqual(cutie.prompt_yes_or_no("", abort_value="foo"), "foo")
+        with InputContext(readchar.key.CTRL_D):
+            with self.assertRaises(KeyboardInterrupt):
+                self.assertEqual(cutie.prompt_yes_or_no(""))
 
     @mock.patch("cutie.print")
     def test_ctrl_d_abort_with_input(self, *m):
         with InputContext(readchar.key.UP, readchar.key.CTRL_D):
-            self.assertEqual(cutie.prompt_yes_or_no("", abort_value="foo"), "foo")
+            with self.assertRaises(KeyboardInterrupt):
+                self.assertEqual(cutie.prompt_yes_or_no(""))
 
     @mock.patch("cutie.print")
     def test_enter_confirm_default(self, *m):
@@ -182,8 +186,9 @@ class TestPromtYesOrNo(unittest.TestCase):
                             (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
                         ]
         with InputContext("f", "o", "o", readchar.key.CTRL_C):
-            cutie.prompt_yes_or_no("foo")
-            self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
+            with self.assertRaises(KeyboardInterrupt):
+                cutie.prompt_yes_or_no("foo")
+                self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
 
     @mock.patch("cutie.print")
     def test_write_keypress_to_terminal_resume_selection(self, mock_print):
@@ -220,9 +225,10 @@ class TestPromtYesOrNo(unittest.TestCase):
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) yes',), {"end": '', "flush": True},),
                             (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
                         ]
-        with InputContext("y", "e", "s", readchar.key.CTRL_C, "\r"):
-            self.assertIsNone(cutie.prompt_yes_or_no("foo", has_to_match_case=True))
-            self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
+        with InputContext("y", "e", "s", readchar.key.CTRL_C):
+            with self.assertRaises(KeyboardInterrupt):
+                self.assertIsNone(cutie.prompt_yes_or_no("foo", has_to_match_case=True))
+                self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
 
     @mock.patch("cutie.print")
     def test_evaluate_written_input_no_ignorecase(self, mock_print):
@@ -246,6 +252,7 @@ class TestPromtYesOrNo(unittest.TestCase):
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) no',), {"end": '', "flush": True},),
                             (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
                         ]
-        with InputContext("n", "o", readchar.key.CTRL_C, "\r"):
-            self.assertIsNone(cutie.prompt_yes_or_no("foo", has_to_match_case=True))
-            self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
+        with InputContext("n", "o", readchar.key.CTRL_C):
+            with self.assertRaises(KeyboardInterrupt):
+                self.assertIsNone(cutie.prompt_yes_or_no("foo", has_to_match_case=True))
+                self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
