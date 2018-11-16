@@ -303,13 +303,8 @@ cutie.quiz(questions = qlist, question_types = qtype, caption_indices = cap,
 | `question_types`       | List[str]      |         | List of strings with question types. |
 | `caption_indices`      | List[int], optional |    | Non-selectable indices.              |    
 | `newlines`             | int, optional  | ` `     | Number of newlines between questions.|
-| `path`                 | bool, optional | True    | Does enter on empty string work.     |
-| `default_is_yes`       | bool, optional | False   | Is yes selected by default           |
-| `deselected_prefix`    | str, optional  | `  `    | Prefix if something is deselected.   |
-| `selected_prefix`      | str, optional  | `> `    | Prefix if something is selected      |
-| `abort_value`          | bool, optional | `None`  | The value on interrupt.              |
-| `char_prompt`          | bool, optional | `True`  | Add a [Y/N] to the prompt.           |
-## Changelog
+| `path`                 | str, optional  | ` `     | Path for answers to be saved         |
+
 
 ### 0.2.3 [dev]
 
