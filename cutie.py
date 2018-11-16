@@ -116,7 +116,7 @@ def select(
                 if new_index not in caption_indices:
                     selected_index = new_index
                     break
-        else:
+        elif keypress == readchar.key.ENTER:
             break
     return selected_index
 
