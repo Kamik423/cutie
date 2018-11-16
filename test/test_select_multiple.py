@@ -196,7 +196,7 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
                             (('\x1b[1;32m{{ confirm }}\x1b[0m \x1b[K',),),
                             (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
                         ]
-        with InputContext(" ", readchar.key.DOWN, " ", readchar.key.DOWN, " "):
+        with InputContext(" ", readchar.key.DOWN, " ", readchar.key.DOWN, readchar.key.ENTER):
             selected_indices = cutie.select_multiple(call_args)
         self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
         self.assertEqual(selected_indices, [0, 1])
@@ -218,7 +218,7 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
                             (('\x1b[1;32m{{ confirm }}\x1b[0m \x1b[K',),),
                             (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
                         ]
-        with InputContext(" ", readchar.key.DOWN, " "):
+        with InputContext(" ", readchar.key.DOWN, readchar.key.ENTER):
             selected_indices = cutie.select_multiple(call_args, minimal_count=1)
             self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
             self.assertEqual(selected_indices, [0])
@@ -232,7 +232,7 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
                             (('\x1b[1;32m{{ confirm }}\x1b[0m \x1b[K',),),
                             (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
                         ]
-        with InputContext(" ", readchar.key.DOWN, " "):
+        with InputContext(" ", readchar.key.DOWN, readchar.key.ENTER):
             selected_indices = cutie.select_multiple(call_args, minimal_count=1, ticked_indices=[0])
             self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
             self.assertEqual(selected_indices, [0])
@@ -247,7 +247,7 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
                             (('\x1b[1;32m{{ confirm }}\x1b[0m \x1b[K',),),
                             (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
                         ]
-        with InputContext(" ", readchar.key.DOWN, " "):
+        with InputContext(" ", readchar.key.DOWN, readchar.key.ENTER):
             selected_indices = cutie.select_multiple(call_args, maximal_count=1, ticked_indices=[0], cursor_index=1)
             self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
             self.assertEqual(selected_indices, [0])
@@ -260,7 +260,7 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
                             (('\x1b[1;32m{{ confirm }}\x1b[0m \x1b[K',),),
                             (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
                         ]
-        with InputContext(" ", readchar.key.DOWN, " "):
+        with InputContext(" ", readchar.key.DOWN, readchar.key.ENTER):
             selected_indices = cutie.select_multiple(call_args, maximal_count=1)
             self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
             self.assertEqual(selected_indices, [0])
