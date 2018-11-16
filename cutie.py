@@ -12,6 +12,25 @@ import readchar
 init()
 
 
+class DefaultKeys:
+    """List of default keybindings.
+
+    Attributes:
+        interrupt(List[str]): Keys that cause a keyboard interrupt.
+        select(List[str]): Keys that trigger list element selection.
+        confirm(List[str]): Keys that trigger list confirmation.
+        delete(List[str]): Keys that trigger character deletion.
+        down(List[str]): Keys that select the element below.
+        up(List[str]): Keys that select the element above.
+    """
+    interrupt: List[str] = [readchar.key.CTRL_C, readchar.key.CTRL_D]
+    select: List[str] = [readchar.key.SPACE]
+    confirm: List[str] = [readchar.key.ENTER]
+    delete: List[str] = [readchar.key.BACKSPACE]
+    down: List[str] = [readchar.key.DOWN, 'j']
+    up: List[str] = [readchar.key.UP, 'k']
+
+
 def get_number(
         prompt: str,
         min_value: Optional[float] = None,
@@ -75,7 +94,8 @@ def select(
         deselected_prefix: str = '\033[1m[ ]\033[0m ',
         selected_prefix: str = '\033[1m[\033[32;1mx\033[0;1m]\033[0m ',
         caption_prefix: str = '',
-        selected_index: int = 0) -> int:
+        selected_index: int = 0,
+        confirm_on_select: bool = True) -> int:
     """Select an option from a list.
 
     Args:
@@ -85,6 +105,7 @@ def select(
         selected_prefix (str, optional): Prefix for selected option ([x]).
         caption_prefix (str, optional): Prefix for captions ().
         selected_index (int, optional): The index to be selected at first.
+        confirm_on_select (bool, optional): Select keys also confirm.
 
     Returns:
         int: The index that has been selected.
@@ -102,22 +123,25 @@ def select(
             elif i in caption_indices:
                 print('\033[K{}{}'.format(caption_prefix, options[i]))
         keypress = readchar.readkey()
-        if keypress == readchar.key.UP:
+        if keypress in DefaultKeys.up:
             new_index = selected_index
             while new_index > 0:
                 new_index -= 1
                 if new_index not in caption_indices:
                     selected_index = new_index
                     break
-        elif keypress == readchar.key.DOWN:
+        elif keypress in DefaultKeys.down:
             new_index = selected_index
             while new_index < len(options) - 1:
                 new_index += 1
                 if new_index not in caption_indices:
                     selected_index = new_index
                     break
-        else:
+        elif keypress in DefaultKeys.confirm or \
+                confirm_on_select and keypress in DefaultKeys.select:
             break
+        elif keypress in DefaultKeys.interrupt:
+            raise KeyboardInterrupt
     return selected_index
 
 
@@ -174,10 +198,7 @@ def select_multiple(
         caption_indices = []
     if ticked_indices is None:
         ticked_indices = []
-    tick_keys = [' ']
     max_index = len(options) - (1 if hide_confirm else 0)
-    if not hide_confirm:
-        tick_keys.append(readchar.key.ENTER)
     error_message = ''
     while True:
         print(f'\033[{max_index + 2}A')
@@ -203,32 +224,22 @@ def select_multiple(
                 print(f'{deselected_confirm_label} {error_message}\033[K')
         error_message = ''
         keypress = readchar.readkey()
-        if keypress == readchar.key.UP:
+        if keypress in DefaultKeys.up:
             new_index = cursor_index
             while new_index > 0:
                 new_index -= 1
                 if new_index not in caption_indices:
                     cursor_index = new_index
                     break
-        elif keypress == readchar.key.DOWN:
+        elif keypress in DefaultKeys.down:
             new_index = cursor_index
             while new_index + 1 <= max_index:
                 new_index += 1
                 if new_index not in caption_indices:
                     cursor_index = new_index
                     break
-        elif keypress in tick_keys:
-            if cursor_index == max_index and not hide_confirm:
-                if minimal_count > len(ticked_indices):
-                    error_message = \
-                        f'Must select at least {minimal_count} options'
-                elif maximal_count is not None and\
-                        maximal_count < len(ticked_indices):
-                    error_message = \
-                        f'Must select at most {maximal_count} options'
-                else:
-                    break
-            elif cursor_index in ticked_indices:
+        elif keypress in DefaultKeys.select:
+            if cursor_index in ticked_indices:
                 if len(ticked_indices) - 1 >= minimal_count:
                     ticked_indices.remove(cursor_index)
             elif maximal_count is not None:
@@ -236,7 +247,7 @@ def select_multiple(
                     ticked_indices.append(cursor_index)
             else:
                 ticked_indices.append(cursor_index)
-        else:
+        elif keypress in DefaultKeys.confirm:
             if minimal_count > len(ticked_indices):
                 error_message = \
                     f'Must select at least {minimal_count} options'
@@ -246,6 +257,8 @@ def select_multiple(
                     f'Must select at most {maximal_count} options'
             else:
                 break
+        elif keypress in DefaultKeys.interrupt:
+            raise KeyboardInterrupt
     if not hide_confirm:
         print('\033[1A\033[K', end='', flush=True)
     return ticked_indices
@@ -295,17 +308,16 @@ def prompt_yes_or_no(
         print('\033[3A\r\033[K'
               f'{question}{yn_prompt}{current_message}', end='', flush=True)
         keypress = readchar.readkey()
-        if keypress in [readchar.key.DOWN, readchar.key.UP]:
+        if keypress in DefaultKeys.down or keypress in DefaultKeys.up:
             is_yes = not is_yes
             is_selected = True
             current_message = yes_text if is_yes else no_text
-        elif keypress in [readchar.key.BACKSPACE, readchar.key.LEFT]:
+        elif keypress in DefaultKeys.delete:
             if current_message:
                 current_message = current_message[:-1]
-        elif keypress in [readchar.key.CTRL_C, readchar.key.CTRL_D]:
-            abort = True
-            break
-        elif keypress in [readchar.key.ENTER, readchar.key.RIGHT]:
+        elif keypress in DefaultKeys.interrupt:
+            raise KeyboardInterrupt
+        elif keypress in DefaultKeys.confirm:
             if is_selected:
                 break
         elif keypress in '\t':
