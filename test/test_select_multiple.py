@@ -205,10 +205,13 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
     def test_select_min_too_few(self, mock_print):
         call_args = ["foo"]
         expected_call = (('\x1b[1;32m{{ confirm }}\x1b[0m Must select at least 1 options\x1b[K',),)
-        with InputContext(readchar.key.DOWN, " "):
-            with self.assertRaises(MockException):
+        with InputContext(readchar.key.DOWN, "\r"):
+            try:
                 cutie.select_multiple(call_args, minimal_count=1)
+            except MockException:
                 self.assertEqual(mock_print.call_args_list[-1], expected_call)
+            else:
+                raise AssertionError("MockException not raised")
 
     @mock.patch("cutie.print")
     def test_select_min_sufficient(self, mock_print):
