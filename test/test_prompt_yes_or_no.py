@@ -206,17 +206,14 @@ class TestPromtYesOrNo(unittest.TestCase):
 
     @mock.patch("cutie.print")
     def test_evaluate_written_input_yes_case_sensitive(self, mock_print):
-        expected_calls = [
-                            (tuple(),),
-                            (('\x1b[K  Yes',),),
-                            (('\x1b[K  No',),),
-                            (('\x1b[3A\r\x1b[Kfoo (Y/N) yes',), {"end": '', "flush": True},),
-                            (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
-                        ]
+        expected_calls = (('\x1b[3A\r\x1b[Kfoo (Y/N) yes',), {"end": '', "flush": True},)
+
         with InputContext("y", "e", "s", readchar.key.CTRL_C):
+            res = None
             with self.assertRaises(KeyboardInterrupt):
-                self.assertIsNone(cutie.prompt_yes_or_no("foo", has_to_match_case=True))
-                self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
+                res = cutie.prompt_yes_or_no("foo", has_to_match_case=True)
+            self.assertIsNone(res)
+            self.assertEqual(mock_print.call_args_list[-1], expected_calls)
 
     @mock.patch("cutie.print")
     def test_evaluate_written_input_no_ignorecase(self, mock_print):
@@ -233,14 +230,11 @@ class TestPromtYesOrNo(unittest.TestCase):
 
     @mock.patch("cutie.print")
     def test_evaluate_written_input_no_case_sensitive(self, mock_print):
-        expected_calls = [
-                            (tuple(),),
-                            (('\x1b[K  Yes',),),
-                            (('\x1b[K  No',),),
-                            (('\x1b[3A\r\x1b[Kfoo (Y/N) no',), {"end": '', "flush": True},),
-                            (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
-                        ]
+        expected_calls = (('\x1b[3A\r\x1b[Kfoo (Y/N) no',), {"end": '', "flush": True},)
+
         with InputContext("n", "o", readchar.key.CTRL_C):
+            res = None
             with self.assertRaises(KeyboardInterrupt):
-                self.assertIsNone(cutie.prompt_yes_or_no("foo", has_to_match_case=True))
-                self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
+                res = cutie.prompt_yes_or_no("foo", has_to_match_case=True)
+            self.assertIsNone(res)
+            self.assertEqual(mock_print.call_args_list[-1], expected_calls)
