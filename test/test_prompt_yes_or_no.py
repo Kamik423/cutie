@@ -110,25 +110,25 @@ class TestPromtYesOrNo(unittest.TestCase):
     def test_ctrl_c_abort(self, *m):
         with InputContext(readchar.key.CTRL_C):
             with self.assertRaises(KeyboardInterrupt):
-                self.assertEqual(cutie.prompt_yes_or_no(""))
+                cutie.prompt_yes_or_no("")
 
     @mock.patch("cutie.print")
     def test_ctrl_c_abort_with_input(self, *m):
         with InputContext(readchar.key.UP, readchar.key.CTRL_D):
             with self.assertRaises(KeyboardInterrupt):
-                self.assertEqual(cutie.prompt_yes_or_no(""))
+                cutie.prompt_yes_or_no("")
 
     @mock.patch("cutie.print")
     def test_ctrl_d_abort(self, *m):
         with InputContext(readchar.key.CTRL_D):
             with self.assertRaises(KeyboardInterrupt):
-                self.assertEqual(cutie.prompt_yes_or_no(""))
+                cutie.prompt_yes_or_no("")
 
     @mock.patch("cutie.print")
     def test_ctrl_d_abort_with_input(self, *m):
         with InputContext(readchar.key.UP, readchar.key.CTRL_D):
             with self.assertRaises(KeyboardInterrupt):
-                self.assertEqual(cutie.prompt_yes_or_no(""))
+                cutie.prompt_yes_or_no("")
 
     @mock.patch("cutie.print")
     def test_enter_confirm_default(self, *m):
