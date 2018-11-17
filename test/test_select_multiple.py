@@ -238,6 +238,20 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
             self.assertEqual(selected_indices, [0])
 
     @mock.patch("cutie.print")
+    def test_deselect_on_min_sufficient(self, mock_print):
+        call_args = ["foo", "bar"]
+        expected_calls = [
+                            (('\x1b[K\x1b[1m( )\x1b[0m foo',),),
+                            (('\x1b[K\x1b[1m(\x1b[32mx\x1b[0;1m)\x1b[0m bar',),),
+                            (('\x1b[1;32m{{ confirm }}\x1b[0m \x1b[K',),),
+                            (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
+                        ]
+        with InputContext(" ", readchar.key.DOWN, readchar.key.DOWN, readchar.key.ENTER):
+            selected_indices = cutie.select_multiple(call_args, minimal_count=1, ticked_indices=[0, 1])
+            self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
+            self.assertEqual(selected_indices, [1])
+
+    @mock.patch("cutie.print")
     def test_select_max_try_select_too_many(self, mock_print):
         """Trying to select additional options shouldn't be possible"""
         call_args = ["foo", "bar"]
