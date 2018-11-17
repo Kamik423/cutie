@@ -107,19 +107,6 @@ class TestPromtYesOrNo(unittest.TestCase):
             self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
 
     @mock.patch("cutie.print")
-    def test_left_delete_char(self, mock_print):
-        expected_calls = [
-                            (tuple(),),
-                            (('\x1b[K\x1b[31m>\x1b[0m Yes',),),
-                            (('\x1b[K  No',),),
-                            (('\x1b[3A\r\x1b[Kfoo (Y/N) Ye',), {"end": '', "flush": True},),
-                            (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
-                        ]
-        with InputContext(readchar.key.UP, readchar.key.LEFT, "\r"):
-            cutie.prompt_yes_or_no("foo")
-            self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
-
-    @mock.patch("cutie.print")
     def test_ctrl_c_abort(self, *m):
         with InputContext(readchar.key.CTRL_C):
             with self.assertRaises(KeyboardInterrupt):
@@ -151,16 +138,6 @@ class TestPromtYesOrNo(unittest.TestCase):
     @mock.patch("cutie.print")
     def test_enter_confirm_selection(self, *m):
         with InputContext(readchar.key.UP, readchar.key.ENTER):
-            self.assertTrue(cutie.prompt_yes_or_no(""))
-
-    @mock.patch("cutie.print")
-    def test_right_confirm_default(self, *m):
-        with InputContext(readchar.key.RIGHT):
-            self.assertFalse(cutie.prompt_yes_or_no(""))
-
-    @mock.patch("cutie.print")
-    def test_right_confirm_selection(self, *m):
-        with InputContext(readchar.key.UP, readchar.key.RIGHT):
             self.assertTrue(cutie.prompt_yes_or_no(""))
 
     @mock.patch("cutie.print")
