@@ -16,7 +16,7 @@ class TestSelect(unittest.TestCase):
         args_list = ["foo", "bar"]
         with self.assertRaises(MockException):
             cutie.select(args_list)
-            mock_print.assert_called_once_with("\n" * (len(args_list) - 1))
+        mock_print.assert_called_once_with("\n" * (len(args_list) - 1))
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -24,7 +24,7 @@ class TestSelect(unittest.TestCase):
         args_list = ["foo", "bar"]
         with self.assertRaises(MockException):
             cutie.select(args_list)
-            self.assertEqual(mock_print.call_args_list[1], ((f"\033[{len(args_list) + 1}A",),))
+        self.assertEqual(mock_print.call_args_list[1], ((f"\033[{len(args_list) + 1}A",),))
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -36,7 +36,7 @@ class TestSelect(unittest.TestCase):
                         ]
         with self.assertRaises(MockException):
             cutie.select(args_list)
-            self.assertEqual(mock_print.call_args_list[2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[2:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -48,7 +48,7 @@ class TestSelect(unittest.TestCase):
                         ]
         with self.assertRaises(MockException):
             cutie.select(args_list, selected_index=1)
-            self.assertEqual(mock_print.call_args_list[2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[2:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -60,7 +60,7 @@ class TestSelect(unittest.TestCase):
                         ]
         with self.assertRaises(MockException):
             cutie.select(args_list, caption_indices=[1])
-            self.assertEqual(mock_print.call_args_list[2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[2:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -79,7 +79,7 @@ class TestSelect(unittest.TestCase):
                             deselected_prefix="+",
                             caption_prefix="$"
                         )
-            self.assertEqual(mock_print.call_args_list[2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[2:], expected_calls)
 
     @mock.patch("cutie.print")
     def test_ignore_unrecognized_key(self, mock_print):
