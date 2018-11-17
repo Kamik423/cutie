@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 
-from . import MockException, yield_input
+from . import MockException
 
 import cutie
 

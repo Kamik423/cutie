@@ -2,7 +2,7 @@ import unittest
 from unittest import mock
 import string
 
-from . import MockException, yield_input, InputContext
+from . import MockException, InputContext
 
 import readchar
 
@@ -107,39 +107,39 @@ class TestSelect(unittest.TestCase):
                         ]
 
         for key in all_keys:
-            cutie.readchar.readkey = yield_input(readchar.key.DOWN, key, readchar.key.ENTER)
-            selindex = cutie.select(["foo"])
-            self.assertEqual(selindex, 0)
-            self.assertEqual(mock_print.call_args_list[:3], expected_calls)
-            mock_print.reset_mock()
+            with InputContext(readchar.key.DOWN, key, readchar.key.ENTER):
+                selindex = cutie.select(["foo"])
+                self.assertEqual(selindex, 0)
+                self.assertEqual(mock_print.call_args_list[:3], expected_calls)
+                mock_print.reset_mock()
 
     @mock.patch("cutie.print")
     def test_move_up(self, *m):
-        cutie.readchar.readkey = yield_input(readchar.key.UP, "\r")
-        args_list = ["foo", "bar"]
-        selindex = cutie.select(args_list, selected_index=1)
-        self.assertEqual(selindex, 0)
+        with InputContext(readchar.key.UP, "\r"):
+            args_list = ["foo", "bar"]
+            selindex = cutie.select(args_list, selected_index=1)
+            self.assertEqual(selindex, 0)
 
     @mock.patch("cutie.print")
     def test_move_up_skip_caption(self, *m):
-        cutie.readchar.readkey = yield_input(readchar.key.UP, "\r")
-        args_list = ["foo", "bar", "baz"]
-        selindex = cutie.select(args_list, selected_index=2, caption_indices=[1])
-        self.assertEqual(selindex, 0)
+        with InputContext(readchar.key.UP, "\r"):
+            args_list = ["foo", "bar", "baz"]
+            selindex = cutie.select(args_list, selected_index=2, caption_indices=[1])
+            self.assertEqual(selindex, 0)
 
     @mock.patch("cutie.print")
     def test_move_down(self, *m):
-        cutie.readchar.readkey = yield_input(readchar.key.DOWN, "\r")
-        args_list = ["foo", "bar"]
-        selindex = cutie.select(args_list)
-        self.assertEqual(selindex, 1)
+        with InputContext(readchar.key.DOWN, "\r"):
+            args_list = ["foo", "bar"]
+            selindex = cutie.select(args_list)
+            self.assertEqual(selindex, 1)
 
     @mock.patch("cutie.print")
     def test_move_down_skip_caption(self, *m):
-        cutie.readchar.readkey = yield_input(readchar.key.DOWN, "\r")
-        args_list = ["foo", "bar", "baz"]
-        selindex = cutie.select(args_list, caption_indices=[1])
-        self.assertEqual(selindex, 2)
+        with InputContext(readchar.key.DOWN, "\r"):
+            args_list = ["foo", "bar", "baz"]
+            selindex = cutie.select(args_list, caption_indices=[1])
+            self.assertEqual(selindex, 2)
 
     @mock.patch("cutie.print")
     def test_keyboard_interrupt_ctrl_c_no_input(self, *m):
