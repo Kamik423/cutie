@@ -12,19 +12,17 @@ class TestSelectMultiplePrint(unittest.TestCase):
     @mock.patch("cutie.print", side_effect=MockException)
     def test_list_newlines(self, mock_print):
         args_list = ["foo", "bar"]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple(args_list)
-        except MockException:
-            mock_print.assert_called_once_with("\n" * (len(args_list) - 1))
+        mock_print.assert_called_once_with("\n" * (len(args_list) - 1))
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
     def test_move_to_first_item(self, mock_print, *m):
         args_list = ["foo", "bar"]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple(args_list)
-        except MockException:
-            self.assertEqual(mock_print.call_args_list[1], ((f"\033[{len(args_list) + 2}A",),))
+        self.assertEqual(mock_print.call_args_list[1], ((f"\033[{len(args_list) + 2}A",),))
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -35,10 +33,9 @@ class TestSelectMultiplePrint(unittest.TestCase):
                             (('\x1b[K\x1b[1m( )\x1b[0m bar',),),
                             (('\x1b[1m(( confirm ))\x1b[0m \x1b[K',),),
                         ]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple(args_list)
-        except MockException:
-            self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -48,10 +45,9 @@ class TestSelectMultiplePrint(unittest.TestCase):
                             (('\x1b[Kfoo',),),
                             (('\x1b[K\x1b[1m( )\x1b[0m bar',),),
                         ]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple(args_list, hide_confirm=True, caption_indices=[0])
-        except MockException:
-            self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -61,10 +57,9 @@ class TestSelectMultiplePrint(unittest.TestCase):
                             (('\x1b[K\x1b[1m( )\x1b[0m foo',),),
                             (('\x1b[K\x1b[32;1m{ }\x1b[0m bar',),),
                         ]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple(args_list, hide_confirm=True, cursor_index=1)
-        except MockException:
-            self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -74,10 +69,9 @@ class TestSelectMultiplePrint(unittest.TestCase):
                             (('\x1b[K\x1b[32;1m{x}\x1b[0m foo',),),
                             (('\x1b[K\x1b[1m( )\x1b[0m bar',),),
                         ]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple(args_list, hide_confirm=True, ticked_indices=[0])
-        except MockException:
-            self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -87,10 +81,9 @@ class TestSelectMultiplePrint(unittest.TestCase):
                             (('\x1b[K\x1b[1m( )\x1b[0m foo',),),
                             (('\x1b[K\x1b[1m( )\x1b[0m bar',),),
                         ]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple(args_list, hide_confirm=True, cursor_index=2)
-        except MockException:
-            self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -100,10 +93,9 @@ class TestSelectMultiplePrint(unittest.TestCase):
                             (('\x1b[K\x1b[1m( )\x1b[0m foo',),),
                             (('\x1b[K\x1b[1m( )\x1b[0m bar',),),
                         ]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple(args_list, hide_confirm=True, cursor_index=2)
-        except MockException:
-            self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -111,10 +103,9 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls =  [
                             (('\x1b[1m(( confirm ))\x1b[0m \x1b[K',),),
                         ]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple([], cursor_index=1)
-        except MockException:
-            self.assertEqual(mock_print.call_args_list[-1:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-1:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -122,10 +113,9 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls =  [
                             (('\x1b[1;32m{{ confirm }}\x1b[0m \x1b[K',),),
                         ]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple([])
-        except MockException:
-            self.assertEqual(mock_print.call_args_list[-1:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-1:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -133,10 +123,9 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls =  [
                             (('\x1b[K\x1b[32;1m{ }\x1b[0m foo',),),
                         ]
-        try:
+        with self.assertRaises(MockException):
             cutie.select_multiple(["foo"], hide_confirm=True)
-        except MockException:
-            self.assertEqual(mock_print.call_args_list[2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[2:], expected_calls)
 
 
 class TestSelectMultipleMoveAndSelect(unittest.TestCase):
@@ -206,12 +195,9 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
         call_args = ["foo"]
         expected_call = (('\x1b[1;32m{{ confirm }}\x1b[0m Must select at least 1 options\x1b[K',),)
         with InputContext(readchar.key.DOWN, "\r"):
-            try:
+            with self.assertRaises(MockException):
                 cutie.select_multiple(call_args, minimal_count=1)
-            except MockException:
-                self.assertEqual(mock_print.call_args_list[-1], expected_call)
-            else:
-                raise AssertionError("MockException not raised")
+            self.assertEqual(mock_print.call_args_list[-1], expected_call)
 
     @mock.patch("cutie.print")
     def test_select_min_sufficient(self, mock_print):
