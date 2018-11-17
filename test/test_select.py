@@ -2,7 +2,7 @@ import unittest
 from unittest import mock
 import string
 
-from . import MockException, yield_input
+from . import MockException, yield_input, InputContext
 
 import readchar
 
@@ -82,7 +82,7 @@ class TestSelect(unittest.TestCase):
             self.assertEqual(mock_print.call_args_list[2:], expected_calls)
 
     @mock.patch("cutie.print")
-    def test_exit_on_unrecognized_key(self, *m):
+    def test_ignore_unrecognized_key(self, mock_print):
         exclude = [
                     '__builtins__',
                     '__cached__',
@@ -93,14 +93,25 @@ class TestSelect(unittest.TestCase):
                     '__package__',
                     '__spec__',
                     'UP',
-                    'DOWN'
+                    'DOWN',
+                    'ENTER',
+                    'CTRL_C',
+                    'CTRL_D'
                     ]
         all_keys = [getattr(readchar.key, k) for k in dir(readchar.key) if k not in exclude]
         all_keys.extend(string.printable)
+        expected_calls = [
+                            (('',),),
+                            (('\x1b[2A',),),
+                            (('\x1b[K\x1b[1m[\x1b[32;1mx\x1b[0;1m]\x1b[0m foo',),),
+                        ]
+
         for key in all_keys:
-            cutie.readchar.readkey = yield_input(readchar.key.DOWN, key)
-            selindex = cutie.select(["foo", "bar"])
-            self.assertEqual(selindex, 1)
+            cutie.readchar.readkey = yield_input(readchar.key.DOWN, key, readchar.key.ENTER)
+            selindex = cutie.select(["foo"])
+            self.assertEqual(selindex, 0)
+            self.assertEqual(mock_print.call_args_list[:3], expected_calls)
+            mock_print.reset_mock()
 
     @mock.patch("cutie.print")
     def test_move_up(self, *m):
@@ -129,3 +140,27 @@ class TestSelect(unittest.TestCase):
         args_list = ["foo", "bar", "baz"]
         selindex = cutie.select(args_list, caption_indices=[1])
         self.assertEqual(selindex, 2)
+
+    @mock.patch("cutie.print")
+    def test_keyboard_interrupt_ctrl_c_no_input(self, *m):
+        with InputContext(readchar.key.CTRL_C):
+            with self.assertRaises(KeyboardInterrupt):
+                cutie.select(["foo"])
+
+    @mock.patch("cutie.print")
+    def test_keyboard_interrupt_ctrl_c_selected(self, *m):
+        with InputContext(readchar.key.DOWN, readchar.key.CTRL_C):
+            with self.assertRaises(KeyboardInterrupt):
+                cutie.select(["foo"], selected_index=0)
+
+    @mock.patch("cutie.print")
+    def test_keyboard_interrupt_ctrl_d_no_input(self, *m):
+        with InputContext(readchar.key.CTRL_D):
+            with self.assertRaises(KeyboardInterrupt):
+                cutie.select(["foo"])
+
+    @mock.patch("cutie.print")
+    def test_keyboard_interrupt_ctrl_d_selected(self, *m):
+        with InputContext(readchar.key.DOWN, readchar.key.CTRL_D):
+            with self.assertRaises(KeyboardInterrupt):
+                cutie.select(["foo"], selected_index=0)
