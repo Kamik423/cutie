@@ -277,13 +277,11 @@ The bool what has been selected.
 
 ## Changelog
 
-### 0.2.3 [dev]
-
-* PEP8 Compliance by [Christopher Bilger](https://github.com/ChristopherBilg)
-
 ### 0.2.2
 
 * Fixed Python in examples
+* PEP8 Compliance by [Christopher Bilger](https://github.com/ChristopherBilg)
+* Fixed critical issue with pypi download ([#15](https://github.com/Kamik423/cutie/issues/15))
 
 ### 0.2.1
 

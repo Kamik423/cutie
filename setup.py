@@ -13,8 +13,8 @@ with open('readme.md', encoding='utf-8') as file:
 
 setuptools.setup(
     name='cutie',
-    version='0.2.1',
-    author='Hans',
+    version='0.2.2',
+    author='Hans / Kamik423',
     author_email='contact.kamik423@gmail.com',
     description='Commandline User Tools for Input Easification',
     long_description=LONG_DESCRIPTION,
