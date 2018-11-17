@@ -158,14 +158,25 @@ class TestPromtYesOrNo(unittest.TestCase):
         expected_calls = [
                             (tuple(),),
                             (('\x1b[K  Yes',),),
+                            (('\x1b[K\x1b[31m>\x1b[0m No',),),
+                            (('\x1b[3A\r\x1b[Kfoo (Y/N) ',), {"end": '', "flush": True},),
+                            (tuple(),),
+                            (('\x1b[K  Yes',),),
+                            (('\x1b[K  No',),),
+                            (('\x1b[3A\r\x1b[Kfoo (Y/N) f',), {"end": '', "flush": True},),
+                            (tuple(),),
+                            (('\x1b[K  Yes',),),
+                            (('\x1b[K  No',),),
+                            (('\x1b[3A\r\x1b[Kfoo (Y/N) fo',), {"end": '', "flush": True},),
+                            (tuple(),),
+                            (('\x1b[K  Yes',),),
                             (('\x1b[K  No',),),
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) foo',), {"end": '', "flush": True},),
-                            (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
                         ]
         with InputContext("f", "o", "o", readchar.key.CTRL_C):
             with self.assertRaises(KeyboardInterrupt):
                 cutie.prompt_yes_or_no("foo")
-                self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
+            self.assertEqual(mock_print.call_args_list, expected_calls)
 
     @mock.patch("cutie.print")
     def test_write_keypress_to_terminal_resume_selection(self, mock_print):
