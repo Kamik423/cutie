@@ -199,7 +199,7 @@ def select_multiple(
     Returns:
         List[int]: The indices that have been selected
     """
-    print('\n' * (len(options) - 1))
+    print('\n' * (len(options) ))
     if caption_indices is None:
         caption_indices = []
     if ticked_indices is None:
@@ -246,12 +246,8 @@ def select_multiple(
                 if new_index not in caption_indices:
                     cursor_index = new_index
                     break
-        elif keypress in DefaultKeys.select:
-            if cursor_index in ticked_indices:
-                ticked_indices.remove(cursor_index)
-            else:
-                ticked_indices.append(cursor_index)
-        elif keypress in DefaultKeys.confirm:
+        elif hide_confirm and keypress in DefaultKeys.confirm or \
+                not hide_confirm and cursor_index == max_index:
             if minimal_count > len(ticked_indices):
                 error_message = \
                     f'Must select at least {minimal_count} options'
@@ -261,6 +257,12 @@ def select_multiple(
                     f'Must select at most {maximal_count} options'
             else:
                 break
+        elif keypress in DefaultKeys.select or \
+                not hide_confirm and keypress in DefaultKeys.confirm:
+            if cursor_index in ticked_indices:
+                ticked_indices.remove(cursor_index)
+            else:
+                ticked_indices.append(cursor_index)
         elif keypress in DefaultKeys.interrupt:
             raise KeyboardInterrupt
     print('\033[1A\033[K', end='', flush=True)
