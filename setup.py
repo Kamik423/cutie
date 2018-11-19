@@ -21,9 +21,8 @@ setuptools.setup(
     py_modules=['cutie'],
     license=cutie.__license__,
     install_requires=['colorama', 'readchar'],
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     classifiers=[
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3 :: Only',
