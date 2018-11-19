@@ -274,7 +274,6 @@ def prompt_yes_or_no(
         default_is_yes: bool = False,
         deselected_prefix: str = '  ',
         selected_prefix: str = '\033[31m>\033[0m ',
-        abort_value: Optional[bool] = None,
         char_prompt: bool = True) -> Optional[bool]:
     """Prompt the user to input yes or no.
 
@@ -287,7 +286,6 @@ def prompt_yes_or_no(
         default_is_yes (bool, optional): Is yes selected by default (no).
         deselected_prefix (str, optional): Prefix if something is deselected.
         selected_prefix (str, optional): Prefix if something is selected (> )
-        abort_value (bool, optional): The value to return on interrupt.
         char_prompt (bool, optional): Add a [Y/N] to the prompt.
 
     Returns:
@@ -297,7 +295,6 @@ def prompt_yes_or_no(
     is_selected = enter_empty_confirms
     current_message = ''
     yn_prompt = f' ({yes_text[0]}/{no_text[0]}) ' if char_prompt else ': '
-    abort = False
     print()
     while True:
         yes = is_yes and is_selected
@@ -343,6 +340,4 @@ def prompt_yes_or_no(
                 is_selected = False
         print()
     print('\033[K\n\033[K\n\033[K\n\033[3A')
-    if abort:
-        return abort_value
     return is_selected and is_yes

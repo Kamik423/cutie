@@ -271,7 +271,6 @@ if cutie.prompt_yes_or_no(
 | `default_is_yes`       | bool, optional | False   | Is yes selected by default           |
 | `deselected_prefix`    | str, optional  | `  `    | Prefix if something is deselected.   |
 | `selected_prefix`      | str, optional  | `> `    | Prefix if something is selected      |
-| `abort_value`          | bool, optional | `None`  | The value on interrupt.              |
 | `char_prompt`          | bool, optional | `True`  | Add a [Y/N] to the prompt.           |
 
 #### Returns
@@ -286,6 +285,7 @@ The bool what has been selected.
 * Travis CI integration
 * Vim Arrow keys (`jk`)
 * Also showing error messages with `hide_confirm` option enabled in `select_multiple`
+* Consistenly crash on keyboard interrupt (Removes `prompt_yes_or_no`'s `abort_value`)
 
 ### 0.2.2
 
