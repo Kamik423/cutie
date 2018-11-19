@@ -3,6 +3,7 @@
 *Command line User Tools for Input Easification*
 
 [![Build Status](https://travis-ci.org/Kamik423/cutie.svg?branch=master)](https://travis-ci.org/Kamik423/cutie)
+[![Coverage Status](https://coveralls.io/repos/github/Kamik423/cutie/badge.svg?branch=coveralls_integration)](https://coveralls.io/github/Kamik423/cutie?branch=coveralls_integration)
 [![PRs Welcome](https://img.shields.io/badge/Homepage-GitHub-green.svg)](https://github.com/kamik423/cutie)
 [![PyPI version](https://badge.fury.io/py/cutie.svg)](https://badge.fury.io/py/cutie)
 [![PyPI license](https://img.shields.io/pypi/l/cutie.svg)](https://pypi.python.org/pypi/cutie/)
