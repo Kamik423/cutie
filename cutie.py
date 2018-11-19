@@ -248,11 +248,7 @@ def select_multiple(
                     break
         elif keypress in DefaultKeys.select:
             if cursor_index in ticked_indices:
-                if len(ticked_indices) - 1 >= minimal_count:
-                    ticked_indices.remove(cursor_index)
-            elif maximal_count is not None:
-                if len(ticked_indices) + 1 <= maximal_count:
-                    ticked_indices.append(cursor_index)
+                ticked_indices.remove(cursor_index)
             else:
                 ticked_indices.append(cursor_index)
         elif keypress in DefaultKeys.confirm:
