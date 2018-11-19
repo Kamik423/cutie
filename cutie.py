@@ -246,12 +246,8 @@ def select_multiple(
                 if new_index not in caption_indices:
                     cursor_index = new_index
                     break
-        elif keypress in DefaultKeys.select:
-            if cursor_index in ticked_indices:
-                ticked_indices.remove(cursor_index)
-            else:
-                ticked_indices.append(cursor_index)
-        elif keypress in DefaultKeys.confirm:
+        elif hide_confirm and keypress in DefaultKeys.confirm or \
+                not hide_confirm and cursor_index == max_index:
             if minimal_count > len(ticked_indices):
                 error_message = \
                     f'Must select at least {minimal_count} options'
