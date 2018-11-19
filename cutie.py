@@ -1,6 +1,12 @@
 #! /usr/bin/env python3
-"""cutie: Commandline User Tools for Input Easification
 """
+Commandline User Tools for Input Easification
+"""
+
+__version__ = "0.2.2"
+__author__ = "Hans / Kamik423"
+__license__ = "MIT"
+
 
 import getpass
 from typing import List, Optional
