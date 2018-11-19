@@ -44,10 +44,11 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls =  [
                             (('\x1b[Kfoo',),),
                             (('\x1b[K\x1b[1m( )\x1b[0m bar',),),
+                            (('\x1b[K',),),
                         ]
         with self.assertRaises(MockException):
             cutie.select_multiple(args_list, hide_confirm=True, caption_indices=[0])
-        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -56,10 +57,11 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls =  [
                             (('\x1b[K\x1b[1m( )\x1b[0m foo',),),
                             (('\x1b[K\x1b[32;1m{ }\x1b[0m bar',),),
+                            (('\x1b[K',),),
                         ]
         with self.assertRaises(MockException):
             cutie.select_multiple(args_list, hide_confirm=True, cursor_index=1)
-        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -68,10 +70,11 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls =  [
                             (('\x1b[K\x1b[32;1m{x}\x1b[0m foo',),),
                             (('\x1b[K\x1b[1m( )\x1b[0m bar',),),
+                            (('\x1b[K',),),
                         ]
         with self.assertRaises(MockException):
             cutie.select_multiple(args_list, hide_confirm=True, ticked_indices=[0])
-        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -80,10 +83,11 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls =  [
                             (('\x1b[K\x1b[1m( )\x1b[0m foo',),),
                             (('\x1b[K\x1b[1m( )\x1b[0m bar',),),
+                            (('\x1b[K',),),
                         ]
         with self.assertRaises(MockException):
             cutie.select_multiple(args_list, hide_confirm=True, cursor_index=2)
-        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -92,10 +96,11 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls =  [
                             (('\x1b[K\x1b[1m( )\x1b[0m foo',),),
                             (('\x1b[K\x1b[1m( )\x1b[0m bar',),),
+                            (('\x1b[K',),),
                         ]
         with self.assertRaises(MockException):
             cutie.select_multiple(args_list, hide_confirm=True, cursor_index=2)
-        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -122,6 +127,7 @@ class TestSelectMultiplePrint(unittest.TestCase):
     def test_print_hide_confirm(self, mock_print, *m):
         expected_calls =  [
                             (('\x1b[K\x1b[32;1m{ }\x1b[0m foo',),),
+                            (('\x1b[K',),),
                         ]
         with self.assertRaises(MockException):
             cutie.select_multiple(["foo"], hide_confirm=True)
@@ -136,10 +142,12 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
         expected_calls = [
                             (('\x1b[K\x1b[32;1m{ }\x1b[0m foo',),),
                             (('\x1b[K\x1b[1m( )\x1b[0m bar',),),
+                            (('\x1b[K',),),
+                            (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
                         ]
         with InputContext(readchar.key.UP, "\r"):
             cutie.select_multiple(call_args, cursor_index=1, hide_confirm=True)
-        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
 
     @mock.patch("cutie.print")
     def test_move_up_skip_caption(self, mock_print):
@@ -148,10 +156,12 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
                             (('\x1b[K\x1b[32;1m{ }\x1b[0m foo',),),
                             (('\x1b[Kbar',),),
                             (('\x1b[K\x1b[1m( )\x1b[0m baz',),),
+                            (('\x1b[K',),),
+                            (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
                         ]
         with InputContext(readchar.key.UP, "\r"):
             cutie.select_multiple(call_args, cursor_index=2, hide_confirm=True, caption_indices=[1])
-        self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
 
     @mock.patch("cutie.print")
     def test_move_down(self, mock_print):
@@ -159,10 +169,12 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
         expected_calls = [
                             (('\x1b[K\x1b[1m( )\x1b[0m foo',),),
                             (('\x1b[K\x1b[32;1m{ }\x1b[0m bar',),),
+                            (('\x1b[K',),),
+                            (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
                         ]
         with InputContext(readchar.key.DOWN, "\r"):
             cutie.select_multiple(call_args, hide_confirm=True)
-        self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
 
     @mock.patch("cutie.print")
     def test_move_down_skip_caption(self, mock_print):
@@ -171,10 +183,12 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
                             (('\x1b[K\x1b[1m( )\x1b[0m foo',),),
                             (('\x1b[Kbar',),),
                             (('\x1b[K\x1b[32;1m{ }\x1b[0m baz',),),
+                            (('\x1b[K',),),
+                            (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
                         ]
         with InputContext(readchar.key.DOWN, "\r"):
             cutie.select_multiple(call_args, hide_confirm=True, caption_indices=[1])
-        self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
+        self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
 
     @mock.patch("cutie.print")
     def test_select(self, mock_print):
@@ -284,6 +298,8 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
         expected_calls = [
                             (('\x1b[K\x1b[1m(\x1b[32mx\x1b[0;1m)\x1b[0m foo',),),
                             (('\x1b[K\x1b[32;1m{ }\x1b[0m bar',),),
+                            (('\x1b[K',),),
+                            (('\x1b[1A\x1b[K',), {"end":'', "flush": True}),
                         ]
         with InputContext(readchar.key.DOWN, "\r"):
             selected_indices = cutie.select_multiple(
@@ -292,5 +308,5 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
                                                         ticked_indices=[0],
                                                         hide_confirm=True
                                                     )
-            self.assertEqual(mock_print.call_args_list[-2:], expected_calls)
+            self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
             self.assertEqual(selected_indices, [0])

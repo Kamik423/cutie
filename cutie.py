@@ -201,7 +201,7 @@ def select_multiple(
     max_index = len(options) - (1 if hide_confirm else 0)
     error_message = ''
     while True:
-        print(f'\033[{max_index + 2}A')
+        print(f'\033[{len(options) + 2}A')
         for i, option in enumerate(options):
             prefix = ''
             if i in caption_indices:
@@ -217,7 +217,9 @@ def select_multiple(
                 else:
                     prefix = deselected_unticked_prefix
             print('\033[K{}{}'.format(prefix, option))
-        if not hide_confirm:
+        if hide_confirm:
+            print(f'{error_message}\033[K')
+        else:
             if cursor_index == max_index:
                 print(f'{selected_confirm_label} {error_message}\033[K')
             else:
@@ -259,8 +261,7 @@ def select_multiple(
                 break
         elif keypress in DefaultKeys.interrupt:
             raise KeyboardInterrupt
-    if not hide_confirm:
-        print('\033[1A\033[K', end='', flush=True)
+    print('\033[1A\033[K', end='', flush=True)
     return ticked_indices
 
 
