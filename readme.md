@@ -10,7 +10,7 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/Kamik423/cutie.svg)](https://GitHub.com/Kamik423/cutie/graphs/contributors/)
 
 A tool for handling common user input functions in an elegant way.
-It supports asking yes or no questions, selecting an element from a list with arrow keys, forcing the user to input a number and secure text entry while having many customization options.
+It supports asking yes or no questions, selecting an element from a list with arrow keys or vim arrow keys, forcing the user to input a number and secure text entry while having many customization options.
 
 For example the yes or no input supports forcing the user to match case, tab autocomplete and switching option with the arrow keys.
 The number input allows setting a minum and a maximum, entering floats or forcing the user to use integers.
@@ -184,6 +184,7 @@ server_id = cutie.select(
 | `selected_prefix`   | str, optional       | `[x]`   | Prefix for selected option.        |
 | `caption_prefix`    | str, optional       | ` `     | Prefix for captions.               |
 | `selected_index`    | int, optional       | 0       | The index to be selected at first. |
+| `confirm_on_select` | bool, optional      | True    | Select keys also confirm.          |
 
 #### Returns
 
@@ -277,6 +278,13 @@ The bool what has been selected.
 
 ## Changelog
 
+### [dev]
+
+* Unittests by [provinzkraut](https://github.com/provinzkraut)
+* Travis CI integration
+* Vim Arrow keys (`jk`)
+* Also showing error messages with `hide_confirm` option enabled in `select_multiple`
+
 ### 0.2.2
 
 * Fixed Python in examples
@@ -320,6 +328,7 @@ If you have a project that uses cutie please let me know and I'll link it here!
 ## Authors
 
 * Main project by [me](https://github.com/Kamik423).
+* Unittests, issues and advice by [provinzkraut](https://github.com/provinzkraut).
 * Windows support by [Lhitrom](https://github.com/Lhitrom).
 * `caption_indices` and tidbits by [dherrada](https://github.com/dherrada).
 * PEP8 Compliance by [Christopher Bilger](https://github.com/ChristopherBilg).
