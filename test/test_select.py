@@ -2,11 +2,10 @@ import unittest
 from unittest import mock
 import string
 
-from . import MockException, InputContext
+from . import MockException, InputContext, cutie
 
 import readchar
 
-import cutie
 
 
 class TestSelect(unittest.TestCase):
