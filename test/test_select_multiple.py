@@ -282,14 +282,17 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
             self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
             self.assertEqual(selected_indices, [0])
 
-    @unittest.skip("bug")
-    @mock.patch("cutie.print") # FIXME: Adjust this test when the bug is fixed
+    @mock.patch("cutie.print")
     def test_select_min_too_few_hide_confirm(self, mock_print):
         """
         This should prompt the user with an error message
-        Related issue: https://github.com/Kamik423/cutie/issues/12
         """
-        pass
+        call_args = ["foo"]
+        expected_call = (('Must select at least 1 options\x1b[K',),)
+        with InputContext(readchar.key.DOWN, "\r"):
+            with self.assertRaises(MockException):
+                cutie.select_multiple(call_args, minimal_count=1, hide_confirm=True)
+            self.assertEqual(mock_print.call_args_list[-1], expected_call)
 
     @mock.patch("cutie.print")
     def test_select_max_try_select_too_many_hide_confirm(self, mock_print):
