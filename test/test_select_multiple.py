@@ -2,9 +2,19 @@ import unittest
 from unittest import mock
 import string
 
-from . import MockException, yield_input, InputContext, print_call, cutie
+from . import MockException, yield_input, InputContext, PrintCall, cutie
 
 import readchar
+
+print_call = PrintCall({
+                    "selectable": '\x1b[K\x1b[1m( )\x1b[0m ',
+                    "selected": '\x1b[K\x1b[1m(\x1b[32mx\x1b[0;1m)\x1b[0m ',
+                    "caption": '\x1b[K',
+                    "active": '\x1b[K\x1b[32;1m{ }\x1b[0m ',
+                    "active-selected": '\x1b[K\x1b[32;1m{x}\x1b[0m ',
+                    "confirm": '\x1b[1m(( confirm ))\x1b[0m \x1b[K',
+                    "confirm-active": '\x1b[1;32m{{ confirm }}\x1b[0m \x1b[K'}
+                    )
 
 
 PRINT_CALL_END = (('\x1b[1A\x1b[K',), {"end":'', "flush": True})
@@ -38,7 +48,6 @@ class TestSelectMultiplePrint(unittest.TestCase):
         ]
         with self.assertRaises(MockException):
             cutie.select_multiple(args_list)
-        self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")

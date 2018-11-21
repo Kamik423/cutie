@@ -3,7 +3,15 @@ from unittest import mock
 
 import readchar
 
-from . import cutie, InputContext, MockException
+from . import cutie, InputContext, MockException, PrintCall
+
+
+print_call = PrintCall({
+                        "selected": '\x1b[K\x1b[31m>\x1b[0m ',
+                        "selectable": '\x1b[K  ',
+})
+
+
 
 
 
@@ -97,8 +105,8 @@ class TestPromtYesOrNo(unittest.TestCase):
     def test_backspace_delete_char(self, mock_print):
         expected_calls = [
                             (tuple(),),
-                            (('\x1b[K\x1b[31m>\x1b[0m Yes',),),
-                            (('\x1b[K  No',),),
+                            print_call("Yes", "selected"),
+                            print_call("No"),
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) Ye',), {"end": '', "flush": True},),
                             (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
                         ]
@@ -144,8 +152,8 @@ class TestPromtYesOrNo(unittest.TestCase):
     def test_tab_select(self, mock_print):
         expected_calls = [
                             (tuple(),),
-                            (('\x1b[K  Yes',),),
-                            (('\x1b[K\x1b[31m>\x1b[0m No',),),
+                            print_call("Yes"),
+                            print_call("No", "selected"),
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) No',), {"end": '', "flush": True},),
                             (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
                         ]
@@ -157,20 +165,20 @@ class TestPromtYesOrNo(unittest.TestCase):
     def test_write_keypress_to_terminal(self, mock_print):
         expected_calls = [
                             (tuple(),),
-                            (('\x1b[K  Yes',),),
-                            (('\x1b[K\x1b[31m>\x1b[0m No',),),
+                            print_call("Yes"),
+                            print_call("No", "selected"),
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) ',), {"end": '', "flush": True},),
                             (tuple(),),
-                            (('\x1b[K  Yes',),),
-                            (('\x1b[K  No',),),
+                            print_call("Yes"),
+                            print_call("No"),
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) f',), {"end": '', "flush": True},),
                             (tuple(),),
-                            (('\x1b[K  Yes',),),
-                            (('\x1b[K  No',),),
+                            print_call("Yes"),
+                            print_call("No"),
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) fo',), {"end": '', "flush": True},),
                             (tuple(),),
-                            (('\x1b[K  Yes',),),
-                            (('\x1b[K  No',),),
+                            print_call("Yes"),
+                            print_call("No"),
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) foo',), {"end": '', "flush": True},),
                         ]
         with InputContext("f", "o", "o", readchar.key.CTRL_C):
@@ -182,8 +190,8 @@ class TestPromtYesOrNo(unittest.TestCase):
     def test_write_keypress_to_terminal_resume_selection(self, mock_print):
         expected_calls = [
                             (tuple(),),
-                            (('\x1b[K\x1b[31m>\x1b[0m Yes',),),
-                            (('\x1b[K  No',),),
+                            print_call("Yes", "selected"),
+                            print_call("No"),
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) Yes',), {"end": '', "flush": True},),
                             (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
                         ]
@@ -195,8 +203,8 @@ class TestPromtYesOrNo(unittest.TestCase):
     def test_evaluate_written_input_yes_ignorecase(self, mock_print):
         expected_calls = [
                             (tuple(),),
-                            (('\x1b[K\x1b[31m>\x1b[0m Yes',),),
-                            (('\x1b[K  No',),),
+                            print_call("Yes", "selected"),
+                            print_call("No"),
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) yes',), {"end": '', "flush": True},),
                             (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
                         ]
@@ -219,8 +227,8 @@ class TestPromtYesOrNo(unittest.TestCase):
     def test_evaluate_written_input_no_ignorecase(self, mock_print):
         expected_calls = [
                             (tuple(),),
-                            (('\x1b[K  Yes',),),
-                            (('\x1b[K\x1b[31m>\x1b[0m No',),),
+                            print_call("Yes"),
+                            print_call("No", "selected"),
                             (('\x1b[3A\r\x1b[Kfoo (Y/N) no',), {"end": '', "flush": True},),
                             (('\x1b[K\n\x1b[K\n\x1b[K\n\x1b[3A',),),
                         ]
