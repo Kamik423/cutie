@@ -44,7 +44,7 @@ def main():
         print('Choose your nemeses')
         # Choose multiple options from a list
         nemeses_indices = cutie.select_multiple(
-            nemeses_options, caption_indices=[6])
+            nemeses_options, caption_indices=[6], hide_confirm=False)
         nemeses = [nemesis for nemesis_index, nemesis
                    in enumerate(nemeses_options)
                    if nemesis_index in nemeses_indices]

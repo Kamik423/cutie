@@ -163,7 +163,7 @@ def select_multiple(
         cursor_index: int = 0,
         minimal_count: int = 0,
         maximal_count: Optional[int] = None,
-        hide_confirm: bool = False,
+        hide_confirm: bool = True,
         deselected_confirm_label: str = '\033[1m(( confirm ))\033[0m',
         selected_confirm_label: str = '\033[1;32m{{ confirm }}\033[0m',
 ) -> List[int]:
