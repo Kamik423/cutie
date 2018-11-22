@@ -2,11 +2,16 @@ import unittest
 from unittest import mock
 import string
 
-from . import MockException, InputContext
+from . import MockException, InputContext, PrintCall, cutie
 
 import readchar
 
-import cutie
+
+print_call = PrintCall({
+                            'selectable': '\x1b[K\x1b[1m[ ]\x1b[0m ',
+                            'selected': '\x1b[K\x1b[1m[\x1b[32;1mx\x1b[0;1m]\x1b[0m ',
+                            'caption': '\x1b[K'
+})
 
 
 class TestSelect(unittest.TestCase):
@@ -30,22 +35,23 @@ class TestSelect(unittest.TestCase):
     @mock.patch("cutie.print")
     def test_print_options(self, mock_print, *m):
         args_list = ["foo", "bar"]
-        expected_calls =  [
-                            (('\x1b[K\x1b[1m[\x1b[32;1mx\x1b[0;1m]\x1b[0m foo',),),
-                            (('\x1b[K\x1b[1m[ ]\x1b[0m bar',),),
-                        ]
+        expected_calls = [
+                            print_call("foo", "selected"),
+                            print_call("bar")
+        ]
         with self.assertRaises(MockException):
             cutie.select(args_list)
         self.assertEqual(mock_print.call_args_list[2:], expected_calls)
+
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
     def test_print_options_selected_index_set(self, mock_print, *m):
         args_list = ["foo", "bar"]
-        expected_calls =  [
-                            (('\x1b[K\x1b[1m[ ]\x1b[0m foo',),),
-                            (('\x1b[K\x1b[1m[\x1b[32;1mx\x1b[0;1m]\x1b[0m bar',),),
-                        ]
+        expected_calls = [
+                            print_call("foo"),
+                            print_call("bar", "selected")
+        ]
         with self.assertRaises(MockException):
             cutie.select(args_list, selected_index=1)
         self.assertEqual(mock_print.call_args_list[2:], expected_calls)
@@ -54,10 +60,10 @@ class TestSelect(unittest.TestCase):
     @mock.patch("cutie.print")
     def test_print_non_selectable(self, mock_print, *m):
         args_list = ["foo", "bar"]
-        expected_calls =  [
-                            (('\x1b[K\x1b[1m[\x1b[32;1mx\x1b[0;1m]\x1b[0m foo',),),
-                            (('\x1b[Kbar',),)
-                        ]
+        expected_calls = [
+                            print_call("foo", "selected"),
+                            print_call("bar", "caption")
+        ]
         with self.assertRaises(MockException):
             cutie.select(args_list, caption_indices=[1])
         self.assertEqual(mock_print.call_args_list[2:], expected_calls)

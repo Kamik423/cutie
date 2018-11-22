@@ -3,6 +3,17 @@ import readchar
 import cutie
 
 
+def PrintCall(states):
+
+    def func(msg=None, state="selectable"):
+        if msg:
+            return ((states[state] + msg,),)
+        else:
+            return ((states[state],),)
+
+    return func
+
+
 def yield_input(*data, raise_on_empty=False):
     """
     Closure that returns predefined data.
