@@ -17,9 +17,9 @@ def PrintCall(states):
                 kwargs = state_[1]
 
         if msg:
-            return ((state_name + msg,), kwargs) if kwargs else ((state_name + msg,),)
+            return ((state_name + msg,), kwargs)
         else:
-            return ((state_name,), kwargs) if kwargs else ((state_name,),)
+            return ((state_name,), kwargs)
 
     return func
 
