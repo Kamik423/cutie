@@ -1,12 +1,19 @@
 """Setup module for PyPI / pip integration.
 """
 
-import cutie
+import imp
+
 import setuptools
 
 with open("readme.md", encoding="utf-8") as file:
     LONG_DESCRIPTION = file.read()
 
+with open("cutie.py", encoding="utf-8") as file:
+    # only go to first import since that module is not yet installed
+    CUTIE_CONTENTS = file.read().split("import")[0]
+
+cutie = imp.new_module("cutie")
+exec(CUTIE_CONTENTS, cutie.__dict__)
 
 setuptools.setup(
     name="cutie",

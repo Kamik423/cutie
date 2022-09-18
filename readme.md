@@ -2,7 +2,7 @@
 
 *Command line User Tools for Input Easification*
 
-[![Build Status](https://travis-ci.org/Kamik423/cutie.svg?branch=master)](https://travis-ci.org/Kamik423/cutie)
+[![Build Status](https://travis-ci.org/Kamik423/cutie.svg?branch=main)](https://travis-ci.org/Kamik423/cutie)
 [![Coverage Status](https://coveralls.io/repos/github/Kamik423/cutie/badge.svg?branch=coveralls_integration)](https://coveralls.io/github/Kamik423/cutie?branch=coveralls_integration)
 [![PRs Welcome](https://img.shields.io/badge/Homepage-GitHub-green.svg)](https://github.com/kamik423/cutie)
 [![PyPI version](https://badge.fury.io/py/cutie.svg)](https://badge.fury.io/py/cutie)
@@ -20,12 +20,12 @@ It will only return once the user inputs a number in that format, showing a warn
 
 It should work on all major operating systems (Mac, Linux, Windows).
 
-![example](https://github.com/Kamik423/cutie/blob/master/example.gif?raw=true)
+![example](https://github.com/Kamik423/cutie/blob/main/example.gif?raw=true)
 
 ## Usage
 
 These are the main functions of cutie.
-[example.py](https://github.com/Kamik423/cutie/blob/master/example.py) contains an extended version of this also showing off the `select_multiple` option.
+[example.py](https://github.com/Kamik423/cutie/blob/main/example.py) contains an extended version of this also showing off the `select_multiple` option.
 
 ```python
 import cutie
@@ -91,7 +91,7 @@ pip3 install -r requirements.txt
 ## Documentation
 
 All functions of cutie are explained here.
-If something is still unclear or you have questions about the implementation just take a look at [cutie.py](https://github.com/Kamik423/cutie/blob/master/cutie.py).
+If something is still unclear or you have questions about the implementation just take a look at [cutie.py](https://github.com/Kamik423/cutie/blob/main/cutie.py).
 The implementation is rather straight forward.
 
 ### get\_number
@@ -200,7 +200,7 @@ In that case space bar and enter select a line.
 The button can be hidden.
 In that case space bar selects the line and enter confirms the selection.
 
-This is not in the example in this readme, but in [example.py](https://github.com/Kamik423/cutie/blob/master/example.py).
+This is not in the example in this readme, but in [example.py](https://github.com/Kamik423/cutie/blob/main/example.py).
 
 ```python
 packages_to_update = cutie.select_multiple(
@@ -339,7 +339,7 @@ If you have a project that uses cutie please let me know and I'll link it here!
 
 ## License
 
-The project is licensed under the [MIT-License](https://github.com/Kamik423/cutie/blob/master/license.md).
+The project is licensed under the [MIT-License](https://github.com/Kamik423/cutie/blob/main/license.md).
 
 ## Acknowledgments
 
