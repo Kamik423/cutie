@@ -279,6 +279,10 @@ The bool what has been selected.
 
 ## Changelog
 
+### 0.3.1
+
+* Readme fixes for PyPi
+
 ### 0.3.0
 
 * Unittests by [provinzkraut](https://github.com/provinzkraut)
