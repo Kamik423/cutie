@@ -8,7 +8,7 @@
 [![PyPI version](https://badge.fury.io/py/cutie.svg)](https://badge.fury.io/py/cutie)
 [![PyPI license](https://img.shields.io/pypi/l/cutie.svg)](https://pypi.python.org/pypi/cutie/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/cutie.svg)](https://pypi.python.org/pypi/cutie/)
-[![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![GitHub contributors](https://img.shields.io/github/contributors/Kamik423/cutie.svg)](https://GitHub.com/Kamik423/cutie/graphs/contributors/)
 
 A tool for handling common user input functions in an elegant way.
@@ -30,32 +30,29 @@ These are the main functions of cutie.
 ```python
 import cutie
 
-if cutie.prompt_yes_or_no('Are you brave enough to continue?'):
+if cutie.prompt_yes_or_no("Are you brave enough to continue?"):
     # List of names to select from, including some captions
     names = [
-        'Kings:',
-        'Arthur, King of the Britons',
-        'Knights of the Round Table:',
-        'Sir Lancelot the Brave',
-        'Sir Robin the Not-Quite-So-Brave-as-Sir-Lancelot',
-        'Sir Bedevere the Wise',
-        'Sir Galahad the Pure',
-        'Swedish captions:',
-        'Møøse']
+        "Kings:",
+        "Arthur, King of the Britons",
+        "Knights of the Round Table:",
+        "Sir Lancelot the Brave",
+        "Sir Robin the Not-Quite-So-Brave-as-Sir-Lancelot",
+        "Sir Bedevere the Wise",
+        "Sir Galahad the Pure",
+        "Swedish captions:",
+        "Møøse",
+    ]
     # Names which are captions and thus not selectable
     captions = [0, 2, 7]
     # Get the name
-    name = names[
-        cutie.select(names, caption_indices=captions, selected_index=8)]
-    print(f'Welcome, {name}')
+    name = names[cutie.select(names, caption_indices=captions, selected_index=8)]
+    print(f"Welcome, {name}")
     # Get an integer greater or equal to 0
-    age = cutie.get_number(
-        'What is your age?',
-        min_value=0,
-        allow_float=False)
+    age = cutie.get_number("What is your age?", min_value=0, allow_float=False)
     # Get input without showing it being typed
-    quest = cutie.secure_input('What is your quest?')
-    print(f'{name}\'s quest (who is {age}) is {quest}.')
+    quest = cutie.secure_input("What is your quest?")
+    print(f"{name}'s quest (who is {age}) is {quest}.")
 ```
 
 When run, as demonstrated in the gif above it yields this output:
@@ -109,12 +106,13 @@ Getting any three digit number for example could be done like that:
 
 ```python
 number = cutie.get_number(
-    'Please enter a three digit number:',
+    "Please enter a three digit number:",
     min_value=100,
     max_value=999,
-    allow_float=False)
+    allow_float=False
+)
 # which is equivalent to
-number = cutie.get_number('Please enter a three digit number', 100, 999, False)
+number = cutie.get_number("Please enter a three digit number", 100, 999, False)
 ```
 
 #### Arguments
@@ -160,20 +158,21 @@ A preselected index can be supplied.
 In its simplest case it could be used like this:
 
 ```python
-colors = ['red', 'green', 'blue', 'yellow']
-print('What is your favorite color?')
+colors = ["red", "green", "blue", "yellow"]
+print("What is your favorite color?")
 favorite_color = colors[cutie.select(colors)]
 ```
 
 With the high degree of customizability, however it is possible to do things like:
 
 ```python
-print('Select server to ping')
+print("Select server to ping")
 server_id = cutie.select(
     servers,
-    deselected_prefix='    ',
-    selected_prefix='PING',
-    selected_index=default_server_ip)
+    deselected_prefix="    ",
+    selected_prefix="PING",
+    selected_index=default_server_ip
+)
 ```
 
 #### Arguments
@@ -206,13 +205,14 @@ This is not in the example in this readme, but in [example.py](https://github.co
 ```python
 packages_to_update = cutie.select_multiple(
     outdated_packages,
-    deselected_unticked_prefix='  KEEP  ',
-    deselected_ticked_prefix=' UPDATE ',
-    selected_unticked_prefix='[ KEEP ]',
-    selected_ticked_prefix='[UPDATE]',
+    deselected_unticked_prefix="  KEEP  ",
+    deselected_ticked_prefix=" UPDATE ",
+    selected_unticked_prefix="[ KEEP ]",
+    selected_ticked_prefix="[UPDATE]",
     ticked_indices=list(range(len(outdated_packages))),
-    deselected_confirm_label='  [[[[ UPDATE ]]]]  ',
-    selected_confirm_label='[ [[[[ UPDATE ]]]] ]')
+    deselected_confirm_label="  [[[[ UPDATE ]]]]  ",
+    selected_confirm_label="[ [[[[ UPDATE ]]]] ]"
+)
 ```
 
 #### Arguments
@@ -245,15 +245,15 @@ Prompt the user to input yes or no.
 This again can range from very simple to very highly customized:
 
 ```python
-if cutie.prompt_yes_or_no('Do you want to continue?'):
+if cutie.prompt_yes_or_no("Do you want to continue?"):
     do_continue()
 ```
 
 ```python
 if cutie.prompt_yes_or_no(
-    'Do you want to hear ze funniest joke in ze world? Proceed at your own risk.',
-    yes_text='JA',
-    no_text='nein',
+    "Do you want to hear ze funniest joke in ze world? Proceed at your own risk.",
+    yes_text="JA",
+    no_text="nein",
     has_to_match_case=True, # The user has to type the exact case
     enter_empty_confirms=False, # An answer has to be selected
     )
