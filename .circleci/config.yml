@@ -1,0 +1,22 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@2.1.1
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build_and_test
+
+jobs:
+  build:
+    build_and_test:
+      executor: python/default
+      steps:
+        - checkout
+        - python/install-packages:
+            pkg-manager: pip
+        - run:
+            name: Run tests
+            command: make tests
