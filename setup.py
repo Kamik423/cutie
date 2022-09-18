@@ -19,7 +19,7 @@ setuptools.setup(
     url="https://github.com/kamik423/cutie",
     py_modules=["cutie"],
     license=cutie.__license__,
-    install_requires=["colorama", "readchar"],
+    install_requires=["colorama", "readchar!=3.0.5"],
     python_requires=">=3.6",
     classifiers=[
         "Programming Language :: Python :: 3.6",
