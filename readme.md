@@ -2,7 +2,7 @@
 
 *Command line User Tools for Input Easification*
 
-[![Build Status](https://travis-ci.org/Kamik423/cutie.svg?branch=main)](https://travis-ci.org/Kamik423/cutie)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/Kamik423/cutie/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/Kamik423/cutie/tree/main)
 [![Coverage Status](https://coveralls.io/repos/github/Kamik423/cutie/badge.svg?branch=coveralls_integration)](https://coveralls.io/github/Kamik423/cutie?branch=coveralls_integration)
 [![PRs Welcome](https://img.shields.io/badge/Homepage-GitHub-green.svg)](https://github.com/kamik423/cutie)
 [![PyPI version](https://badge.fury.io/py/cutie.svg)](https://badge.fury.io/py/cutie)
@@ -278,6 +278,10 @@ if cutie.prompt_yes_or_no(
 The bool what has been selected.
 
 ## Changelog
+
+### 0.3.2
+
+* CircleCI Integration
 
 ### 0.3.1
 
