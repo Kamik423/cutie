@@ -13,6 +13,6 @@ coverage:
 black:
 	black *.py
 
-release: black, tests
+release: tests, black
 	python setup.py sdist bdist_wheel
 	twine upload dist/*

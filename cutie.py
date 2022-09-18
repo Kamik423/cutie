@@ -3,7 +3,7 @@
 Commandline User Tools for Input Easification
 """
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 __author__ = "Hans / Kamik423"
 __license__ = "MIT"
 
