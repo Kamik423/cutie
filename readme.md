@@ -279,7 +279,7 @@ The bool what has been selected.
 
 ## Changelog
 
-### [dev]
+### 0.3.0
 
 * Unittests by [provinzkraut](https://github.com/provinzkraut)
 * Travis CI integration
@@ -287,6 +287,7 @@ The bool what has been selected.
 * Also showing error messages with `hide_confirm` option enabled in `select_multiple`
 * Consistenly crash on keyboard interrupt (Removes `prompt_yes_or_no`'s `abort_value`)
 * Set `hide_confirm` to default in `select_multiple` ([#9](https://github.com/Kamik423/cutie/issues/9))
+* Black code style
 
 ### 0.2.2
 
