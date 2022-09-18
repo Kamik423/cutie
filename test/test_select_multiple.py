@@ -12,12 +12,13 @@ print_call = PrintCall({
                     "caption": '\x1b[K',
                     "active": '\x1b[K\x1b[32;1m{ }\x1b[0m ',
                     "active-selected": '\x1b[K\x1b[32;1m{x}\x1b[0m ',
-                    "confirm": '\x1b[1m(( confirm ))\x1b[0m \x1b[K',
-                    "confirm-active": '\x1b[1;32m{{ confirm }}\x1b[0m \x1b[K'}
-                    )
+                    "confirm": ('\x1b[1m(( confirm ))\x1b[0m \x1b[K', {"end":"", "flush":True}),
+                    "confirm-active": ('\x1b[1;32m{{ confirm }}\x1b[0m \x1b[K', {"end":"", "flush":True}),
+                    "no_confirm_line": ('\033[K', {"end": "", "flush": True}),
+})
 
 
-PRINT_CALL_END = (('\x1b[1A\x1b[K',), {"end":'', "flush": True})
+PRINT_CALL_END = (('\r\x1b[K',), {"end":'', "flush": True})
 
 
 class TestSelectMultiplePrint(unittest.TestCase):
@@ -35,7 +36,7 @@ class TestSelectMultiplePrint(unittest.TestCase):
         args_list = ["foo", "bar"]
         with self.assertRaises(MockException):
             cutie.select_multiple(args_list)
-        self.assertEqual(mock_print.call_args_list[1], ((f"\033[{len(args_list) + 2}A",),))
+        self.assertEqual(mock_print.call_args_list[1], ((f"\033[{len(args_list) + 1}A",),))
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
@@ -56,10 +57,10 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls = [
                             print_call("foo", "caption"),
                             print_call("bar"),
-                            print_call(state="caption")
+                            print_call(state="no_confirm_line")
         ]
         with self.assertRaises(MockException):
-            cutie.select_multiple(args_list, hide_confirm=True, caption_indices=[0])
+            cutie.select_multiple(args_list, caption_indices=[0])
         self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
@@ -69,10 +70,10 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls = [
                             print_call("foo"),
                             print_call("bar", "active"),
-                            print_call(state="caption")
+                            print_call(state="no_confirm_line")
         ]
         with self.assertRaises(MockException):
-            cutie.select_multiple(args_list, hide_confirm=True, cursor_index=1)
+            cutie.select_multiple(args_list, cursor_index=1)
         self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
@@ -82,10 +83,10 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls = [
                             print_call("foo", "active-selected"),
                             print_call("bar"),
-                            print_call(state="caption")
+                            print_call(state="no_confirm_line")
         ]
         with self.assertRaises(MockException):
-            cutie.select_multiple(args_list, hide_confirm=True, ticked_indices=[0])
+            cutie.select_multiple(args_list, ticked_indices=[0])
         self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
@@ -95,10 +96,10 @@ class TestSelectMultiplePrint(unittest.TestCase):
         expected_calls = [
                             print_call("foo"),
                             print_call("bar"),
-                            print_call(state="caption")
+                            print_call(state="no_confirm_line")
         ]
         with self.assertRaises(MockException):
-            cutie.select_multiple(args_list, hide_confirm=True, cursor_index=2)
+            cutie.select_multiple(args_list, cursor_index=2)
         self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
@@ -106,7 +107,7 @@ class TestSelectMultiplePrint(unittest.TestCase):
     def test_print_deselected_confirm(self, mock_print, *m):
         expected_call = print_call(state="confirm")
         with self.assertRaises(MockException):
-            cutie.select_multiple([], cursor_index=1)
+            cutie.select_multiple([], cursor_index=1, hide_confirm=False)
         self.assertEqual(mock_print.call_args_list[-1], expected_call)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
@@ -114,18 +115,18 @@ class TestSelectMultiplePrint(unittest.TestCase):
     def test_print_selected_confirm(self, mock_print, *m):
         expected_call = print_call(state="confirm-active")
         with self.assertRaises(MockException):
-            cutie.select_multiple([])
+            cutie.select_multiple([], hide_confirm=False)
         self.assertEqual(mock_print.call_args_list[-1], expected_call)
 
     @mock.patch("cutie.readchar.readkey", side_effect=MockException)
     @mock.patch("cutie.print")
-    def test_print_hide_confirm(self, mock_print, *m):
+    def test_print_show_confirm(self, mock_print, *m):
         expected_calls = [
                             print_call("foo", "active"),
-                            print_call("", "caption")
+                            print_call(state="confirm")
         ]
         with self.assertRaises(MockException):
-            cutie.select_multiple(["foo"], hide_confirm=True)
+            cutie.select_multiple(["foo"], hide_confirm=False)
         self.assertEqual(mock_print.call_args_list[2:], expected_calls)
 
 
@@ -137,11 +138,11 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
         expected_calls = [
                             print_call("foo", "active"),
                             print_call("bar"),
-                            print_call("", "caption"),
+                            print_call(state="no_confirm_line"),
                             PRINT_CALL_END
                         ]
         with InputContext(readchar.key.UP, "\r"):
-            cutie.select_multiple(call_args, cursor_index=1, hide_confirm=True)
+            cutie.select_multiple(call_args, cursor_index=1)
         self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
 
     @mock.patch("cutie.print")
@@ -151,11 +152,11 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
                             print_call("foo", "active"),
                             print_call("bar", "caption"),
                             print_call("baz"),
-                            print_call("", "caption"),
+                            print_call(state="no_confirm_line"),
                             PRINT_CALL_END
                         ]
         with InputContext(readchar.key.UP, "\r"):
-            cutie.select_multiple(call_args, cursor_index=2, hide_confirm=True, caption_indices=[1])
+            cutie.select_multiple(call_args, cursor_index=2, caption_indices=[1])
         self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
 
     @mock.patch("cutie.print")
@@ -164,11 +165,11 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
         expected_calls = [
                             print_call("foo"),
                             print_call("bar", "active"),
-                            print_call("", "caption"),
+                            print_call(state="no_confirm_line"),
                             PRINT_CALL_END
                         ]
         with InputContext(readchar.key.DOWN, "\r"):
-            cutie.select_multiple(call_args, hide_confirm=True)
+            cutie.select_multiple(call_args)
         self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
 
     @mock.patch("cutie.print")
@@ -178,12 +179,12 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
                             print_call("foo"),
                             print_call("bar", "caption"),
                             print_call("baz", "active"),
-                            print_call("", "caption"),
+                            print_call(state="no_confirm_line"),
                             PRINT_CALL_END
 
                         ]
         with InputContext(readchar.key.DOWN, "\r"):
-            cutie.select_multiple(call_args, hide_confirm=True, caption_indices=[1])
+            cutie.select_multiple(call_args, caption_indices=[1])
         self.assertEqual(mock_print.call_args_list[-5:], expected_calls)
 
     @mock.patch("cutie.print")
@@ -191,12 +192,12 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
         call_args = ["foo", "bar"]
         expected_calls = [
                             print_call("foo", "selected"),
-                            print_call("bar", "selected"),
-                            print_call(state="confirm-active"),
+                            print_call("bar", "active-selected"),
+                            print_call(state="no_confirm_line"),
                             PRINT_CALL_END
 
                         ]
-        with InputContext(" ", readchar.key.DOWN, " ", readchar.key.DOWN, readchar.key.ENTER):
+        with InputContext(" ", readchar.key.DOWN, " ", readchar.key.ENTER):
             selected_indices = cutie.select_multiple(call_args)
         self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
         self.assertEqual(selected_indices, [0, 1])
@@ -204,36 +205,31 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
     @mock.patch("cutie.print")
     def test_select_min_too_few(self, mock_print):
         call_args = ["foo"]
-        expected_call = (('\x1b[1;32m{{ confirm }}\x1b[0m Must select at least 1 options\x1b[K',),)
+        expected_call = (('Must select at least 1 options\x1b[K',), {'end':"", "flush":True})
         with InputContext(readchar.key.DOWN, "\r"):
             with self.assertRaises(MockException):
                 cutie.select_multiple(call_args, minimal_count=1)
             self.assertEqual(mock_print.call_args_list[-1], expected_call)
 
     @mock.patch("cutie.print")
+    def test_select_max_too_many(self, mock_print):
+        call_args = ["foo"]
+        expected_call = (('Must select at most 0 options\x1b[K',), {'end':"", "flush":True})
+        with InputContext(readchar.key.ENTER):
+            with self.assertRaises(MockException):
+                cutie.select_multiple(call_args, maximal_count=0, ticked_indices=[0])
+            self.assertEqual(mock_print.call_args_list[-1], expected_call)
+
+    @mock.patch("cutie.print")
     def test_select_min_sufficient(self, mock_print):
         call_args = ["foo"]
         expected_calls = [
-                            print_call("foo", "selected"),
-                            print_call(state="confirm-active"),
+                            print_call("foo", "active-selected"),
+                            print_call(state="no_confirm_line"),
                             PRINT_CALL_END
         ]
-        with InputContext(" ", readchar.key.DOWN, readchar.key.ENTER):
+        with InputContext(" ", readchar.key.ENTER):
             selected_indices = cutie.select_multiple(call_args, minimal_count=1)
-            self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
-            self.assertEqual(selected_indices, [0])
-
-    @mock.patch("cutie.print")
-    def test_deny_deselect_on_min_too_few(self, mock_print):
-        """Trying to deselect here shouldn't be possible"""
-        call_args = ["foo"]
-        expected_calls = [
-                            print_call("foo", "selected"),
-                            print_call(state="confirm-active"),
-                            PRINT_CALL_END
-        ]
-        with InputContext(" ", readchar.key.DOWN, readchar.key.ENTER):
-            selected_indices = cutie.select_multiple(call_args, minimal_count=1, ticked_indices=[0])
             self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
             self.assertEqual(selected_indices, [0])
 
@@ -241,40 +237,25 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
     def test_deselect_on_min_sufficient(self, mock_print):
         call_args = ["foo", "bar"]
         expected_calls = [
-                            print_call("foo"),
-                            print_call("bar", "selected"),
-                            print_call(state="confirm-active"),
+                            print_call("foo", "selectable"),
+                            print_call("bar", "active-selected"),
+                            print_call(state="no_confirm_line"),
                             PRINT_CALL_END
                         ]
-        with InputContext(" ", readchar.key.DOWN, readchar.key.DOWN, readchar.key.ENTER):
+        with InputContext(" ", readchar.key.DOWN, readchar.key.ENTER):
             selected_indices = cutie.select_multiple(call_args, minimal_count=1, ticked_indices=[0, 1])
             self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
             self.assertEqual(selected_indices, [1])
 
     @mock.patch("cutie.print")
-    def test_select_max_try_select_too_many(self, mock_print):
-        """Trying to select additional options shouldn't be possible"""
-        call_args = ["foo", "bar"]
-        expected_calls = [
-                            print_call("foo", "selected"),
-                            print_call("bar"),
-                            print_call(state="confirm-active"),
-                            PRINT_CALL_END
-                        ]
-        with InputContext(" ", readchar.key.DOWN, readchar.key.ENTER):
-            selected_indices = cutie.select_multiple(call_args, maximal_count=1, ticked_indices=[0], cursor_index=1)
-            self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
-            self.assertEqual(selected_indices, [0])
-
-    @mock.patch("cutie.print")
     def test_select_max_okay(self, mock_print):
         call_args = ["foo"]
         expected_calls = [
-                            print_call("foo", "selected"),
-                            print_call(state="confirm-active"),
+                            print_call("foo", "active-selected"),
+                            print_call(state="no_confirm_line"),
                             PRINT_CALL_END
                         ]
-        with InputContext(" ", readchar.key.DOWN, readchar.key.ENTER):
+        with InputContext(" ", readchar.key.ENTER):
             selected_indices = cutie.select_multiple(call_args, maximal_count=1)
             self.assertEqual(mock_print.call_args_list[-3:], expected_calls)
             self.assertEqual(selected_indices, [0])
@@ -285,28 +266,29 @@ class TestSelectMultipleMoveAndSelect(unittest.TestCase):
         This should prompt the user with an error message
         """
         call_args = ["foo"]
-        expected_call = (('Must select at least 1 options\x1b[K',),)
+        expected_call = (('Must select at least 1 options\x1b[K',), {"end":"", "flush":True})
         with InputContext(readchar.key.DOWN, "\r"):
             with self.assertRaises(MockException):
-                cutie.select_multiple(call_args, minimal_count=1, hide_confirm=True)
+                cutie.select_multiple(call_args, minimal_count=1)
             self.assertEqual(mock_print.call_args_list[-1], expected_call)
 
     @mock.patch("cutie.print")
-    def test_select_max_try_select_too_many_hide_confirm(self, mock_print):
-        """Trying to select additional options shouldn't be possible"""
+    def test_select_max_too_many_show_confirm(self, mock_print):
+        """
+        This should prompt the user with an error message
+        """
+        call_args = ["foo"]
+        expected_call = (('\x1b[1;32m{{ confirm }}\x1b[0m Must select at most 0 options\x1b[K',), {"end":"", "flush":True})
+        with InputContext(readchar.key.DOWN, readchar.key.ENTER):
+            with self.assertRaises(MockException):
+                cutie.select_multiple(call_args, maximal_count=0, ticked_indices=[0], hide_confirm=False)
+            self.assertEqual(mock_print.call_args_list[-1], expected_call)
+
+class TestSelectMultipleMisc(unittest.TestCase):
+
+    @mock.patch("cutie.print")
+    def test_keyboard_interrupt(self, mock_print):
         call_args = ["foo", "bar"]
-        expected_calls = [
-                            print_call("foo", "selected"),
-                            print_call("bar", "active"),
-                            print_call("", "caption"),
-                            PRINT_CALL_END
-        ]
-        with InputContext(readchar.key.DOWN, " ", "\r"):
-            selected_indices = cutie.select_multiple(
-                                                        call_args,
-                                                        maximal_count=1,
-                                                        ticked_indices=[0],
-                                                        hide_confirm=True
-                                                    )
-            self.assertEqual(mock_print.call_args_list[-4:], expected_calls)
-            self.assertEqual(selected_indices, [0])
+        with InputContext(readchar.key.CTRL_C):
+            with self.assertRaises(KeyboardInterrupt):
+                cutie.select_multiple(call_args)

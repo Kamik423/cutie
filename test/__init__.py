@@ -6,10 +6,20 @@ import cutie
 def PrintCall(states):
 
     def func(msg=None, state="selectable"):
+        state_ = states[state]
+        state_name: str
+        kwargs = {}
+        if isinstance(state_, str):
+            state_name = state_
+        elif isinstance(state_, tuple):
+            state_name = state_[0]
+            if len(state) > 1:
+                kwargs = state_[1]
+
         if msg:
-            return ((states[state] + msg,),)
+            return ((state_name + msg,), kwargs)
         else:
-            return ((states[state],),)
+            return ((state_name,), kwargs)
 
     return func
 

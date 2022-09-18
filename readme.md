@@ -135,7 +135,7 @@ Get secure input without showing it in the command line.
 This could be used for passwords:
 
 ```python
-password = cutie.secure_input('Please enter your password:')
+password = cutie.secure_input("Please enter your password:")
 ```
 
 #### Arguments
@@ -230,7 +230,7 @@ packages_to_update = cutie.select_multiple(
 | `cursor_index`               | int, optional       | 0               | The index the cursor starts at.                                                                            |
 | `minimal_count`              | int, optional       | 0               | The minimal amount of lines that have to be ticked.                                                        |
 | `maximal_count`              | int, optional       | infinity        | The maximal amount of lines that have to be ticked.                                                        |
-| `hide_confirm`               | bool, optional      | `False`         | Hide the confirm button. This causes `<ENTER>` to confirm the entire selection and not just tick the line. |
+| `hide_confirm`               | bool, optional      | `True`          | Hide the confirm button. This causes `<ENTER>` to confirm the entire selection and not just tick the line. |
 | `deselected_confirm_label`   | str, optional       | `(( confirm ))` | The confirm label if not selected.                                                                         |
 | `selected_confirm_label`     | str, optional       | `{{ confirm }}` | The confirm label if selected.                                                                             |
 
@@ -264,8 +264,8 @@ if cutie.prompt_yes_or_no(
 | argument               | type           | default | description                          |
 |:-----------------------|:---------------|:--------|:-------------------------------------|
 | `question`             | str            |         | The prompt asking the user to input. |
-| `yes_text`             | str, optional  | `Yes`   | The text corresponding to 'yes'.     |
-| `no_text`              | str, optional  | `No`    | The text corresponding to 'no'.      |
+| `yes_text`             | str, optional  | `Yes`   | The text corresponding to "yes".     |
+| `no_text`              | str, optional  | `No`    | The text corresponding to "no".      |
 | `has_to_match_case`    | bool, optional | `False` | Does the case have to match.         |
 | `enter_empty_confirms` | bool, optional | True    | Does enter on empty string work.     |
 | `default_is_yes`       | bool, optional | False   | Is yes selected by default           |
@@ -286,6 +286,7 @@ The bool what has been selected.
 * Vim Arrow keys (`jk`)
 * Also showing error messages with `hide_confirm` option enabled in `select_multiple`
 * Consistenly crash on keyboard interrupt (Removes `prompt_yes_or_no`'s `abort_value`)
+* Set `hide_confirm` to default in `select_multiple` ([#9](https://github.com/Kamik423/cutie/issues/9))
 
 ### 0.2.2
 

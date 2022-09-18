@@ -170,7 +170,7 @@ def select_multiple(
     cursor_index: int = 0,
     minimal_count: int = 0,
     maximal_count: Optional[int] = None,
-    hide_confirm: bool = False,
+    hide_confirm: bool = True,
     deselected_confirm_label: str = "\033[1m(( confirm ))\033[0m",
     selected_confirm_label: str = "\033[1;32m{{ confirm }}\033[0m",
 ) -> List[int]:
@@ -214,7 +214,7 @@ def select_multiple(
     max_index = len(options) - (1 if hide_confirm else 0)
     error_message = ""
     while True:
-        print(f"\033[{len(options) + 2}A")
+        print(f"\033[{len(options) + 1}A")
         for i, option in enumerate(options):
             prefix = ""
             if i in caption_indices:
@@ -231,12 +231,20 @@ def select_multiple(
                     prefix = deselected_unticked_prefix
             print("\033[K{}{}".format(prefix, option))
         if hide_confirm:
-            print(f"{error_message}\033[K")
+            print(f"{error_message}\033[K", end="", flush=True)
         else:
             if cursor_index == max_index:
-                print(f"{selected_confirm_label} {error_message}\033[K")
+                print(
+                    f"{selected_confirm_label} {error_message}\033[K",
+                    end="",
+                    flush=True,
+                )
             else:
-                print(f"{deselected_confirm_label} {error_message}\033[K")
+                print(
+                    f"{deselected_confirm_label} {error_message}\033[K",
+                    end="",
+                    flush=True,
+                )
         error_message = ""
         keypress = readchar.readkey()
         if keypress in DefaultKeys.up:
@@ -253,25 +261,30 @@ def select_multiple(
                 if new_index not in caption_indices:
                     cursor_index = new_index
                     break
-        elif keypress in DefaultKeys.select:
-            if cursor_index in ticked_indices:
-                if len(ticked_indices) - 1 >= minimal_count:
-                    ticked_indices.remove(cursor_index)
-            elif maximal_count is not None:
-                if len(ticked_indices) + 1 <= maximal_count:
-                    ticked_indices.append(cursor_index)
-            else:
-                ticked_indices.append(cursor_index)
-        elif keypress in DefaultKeys.confirm:
+        elif (
+            hide_confirm
+            and keypress in DefaultKeys.confirm
+            or not hide_confirm
+            and cursor_index == max_index
+        ):
             if minimal_count > len(ticked_indices):
                 error_message = f"Must select at least {minimal_count} options"
             elif maximal_count is not None and maximal_count < len(ticked_indices):
                 error_message = f"Must select at most {maximal_count} options"
             else:
                 break
+        elif (
+            keypress in DefaultKeys.select
+            or not hide_confirm
+            and keypress in DefaultKeys.confirm
+        ):
+            if cursor_index in ticked_indices:
+                ticked_indices.remove(cursor_index)
+            else:
+                ticked_indices.append(cursor_index)
         elif keypress in DefaultKeys.interrupt:
             raise KeyboardInterrupt
-    print("\033[1A\033[K", end="", flush=True)
+    print("\r\033[K", end="", flush=True)
     return ticked_indices
 
 
