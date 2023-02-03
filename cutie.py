@@ -94,6 +94,22 @@ def secure_input(prompt: str) -> str:
     return getpass.getpass(prompt + " ")
 
 
+def default_input(prompt: str, default: str) -> str:
+    """Get an input with a default value, if user leaves input empty.
+
+    Args:
+        prompt (str): The prompt asking the user to input
+        default (str): The default value if left empty
+
+        Returns:
+            str: The user input or default if empty
+    """
+    user_input = input(f"{prompt} ({default}): ")
+    if user_input == "":
+        return default
+    return user_input
+
+
 def select(
     options: List[str],
     caption_indices: Optional[List[int]] = None,
