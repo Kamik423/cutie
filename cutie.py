@@ -27,6 +27,7 @@ class DefaultKeys:
         delete(List[str]): Keys that trigger character deletion.
         down(List[str]): Keys that select the element below.
         up(List[str]): Keys that select the element above.
+        numbers(List[str]): Keys that trigger specific list element selection using numeric indexes.
     """
 
     interrupt: List[str] = [readchar.key.CTRL_C, readchar.key.CTRL_D]
