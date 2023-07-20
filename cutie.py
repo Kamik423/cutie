@@ -27,6 +27,7 @@ class DefaultKeys:
         delete(List[str]): Keys that trigger character deletion.
         down(List[str]): Keys that select the element below.
         up(List[str]): Keys that select the element above.
+        numbers(List[str]): Keys that trigger specific list element selection using numeric indexes.
     """
 
     interrupt: List[str] = [readchar.key.CTRL_C, readchar.key.CTRL_D]
@@ -35,6 +36,7 @@ class DefaultKeys:
     delete: List[str] = [readchar.key.BACKSPACE]
     down: List[str] = [readchar.key.DOWN, "j"]
     up: List[str] = [readchar.key.UP, "k"]
+    numbers: List[str] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
 
 
 def get_number(
@@ -153,6 +155,12 @@ def select(
             and keypress in DefaultKeys.select
         ):
             break
+        elif (
+            keypress in DefaultKeys.numbers
+            and int(keypress) < len(options)
+            and int(keypress) not in caption_indices
+        ):
+            selected_index = int(keypress)
         elif keypress in DefaultKeys.interrupt:
             raise KeyboardInterrupt
     return selected_index
@@ -282,6 +290,15 @@ def select_multiple(
                 ticked_indices.remove(cursor_index)
             else:
                 ticked_indices.append(cursor_index)
+        elif (
+            keypress in DefaultKeys.numbers
+            and int(keypress) - 1 < len(options)
+            and int(keypress) - 1 not in caption_indices
+        ):
+            keyint = int(keypress) - 1
+            ticked_indices.remove(
+                keyint
+            ) if keyint in ticked_indices else ticked_indices.append(keyint)
         elif keypress in DefaultKeys.interrupt:
             raise KeyboardInterrupt
     print("\r\033[K", end="", flush=True)
